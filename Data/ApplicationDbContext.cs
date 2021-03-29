@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using LetsTryMVC.Models;
 
 namespace LetsTryMVC.Data
 {
@@ -12,5 +13,7 @@ namespace LetsTryMVC.Data
             : base(options)
         {
         }
+        public DbSet<LetsTryMVC.Models.Product> Product { get; set; }
+        public DbSet<LetsTryMVC.Models.Photo> Photo { get; set; }
     }
 }
