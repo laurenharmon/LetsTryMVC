@@ -23,7 +23,11 @@ namespace LetsTryMVC.Controllers
         // GET: Products
         public IActionResult Index()
         {
-            return View();
+            List<Product> prdcts = _context.Product
+               .Include(x => x.Category)
+               .ToList();
+
+            return View(prdcts);
         }
 
         // GET: Products/Details/5
@@ -52,9 +56,6 @@ namespace LetsTryMVC.Controllers
             return View(addProductViewModel);
         }
 
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(AddProductViewModel addProductViewModel)

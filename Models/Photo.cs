@@ -10,6 +10,8 @@ namespace LetsTryMVC.Models
         public int Id { get; set; }
         public string ImageName { get; set; }
         public string Image { get; set; }
+        public ProductCategory Category { get; set; }
+        public int CategoryId { get; set; }
 
         public Photo(string imageName, string image)
         {

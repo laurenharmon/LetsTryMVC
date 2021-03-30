@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using LetsTryMVC.Data;
 using LetsTryMVC.Models;
 using System.IO;
+using LetsTryMVC.ViewModels;
 
 namespace LetsTryMVC.Controllers
 {
@@ -23,7 +24,11 @@ namespace LetsTryMVC.Controllers
         // GET: Photos
         public IActionResult Index()
         {
-            return View();
+            List<Photo> photos = _context.Photo
+                .Include(x => x.Category)
+                .ToList();
+
+            return View(photos);
         }
 
         // GET: Photos/Details/5
@@ -47,18 +52,33 @@ namespace LetsTryMVC.Controllers
         // GET: Photos/Create
         public IActionResult Create()
         {
-            return View();
+            List<ProductCategory> categories = _context.Categories.ToList();
+            AddPhotoViewModel addPhotoViewModel = new AddPhotoViewModel(categories);
+            return View(addPhotoViewModel);
         }
 
-        // POST: Photos/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ImageName,Image")] Photo photo)
+        public IActionResult Create(AddPhotoViewModel addPhotoViewModel)
         {
-            
-            return View(photo);
+            if (ModelState.IsValid)
+            {
+                ProductCategory category = _context.Categories.Find(addPhotoViewModel.CategoryId);
+                Photo newPhoto = new Photo
+                {
+                    ImageName = addPhotoViewModel.ImageName,
+                    Image = addPhotoViewModel.Image,
+                    Category = category
+                };
+
+                _context.Photo.Add(newPhoto);
+                _context.SaveChanges();
+
+                return Redirect("/photos");
+            }
+
+            return View(addPhotoViewModel);
         }
 
         // GET: Photos/Edit/5
