@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LetsTryMVC.Data;
 using LetsTryMVC.Models;
+using System.IO;
 
 namespace LetsTryMVC.Controllers
 {
@@ -20,9 +21,9 @@ namespace LetsTryMVC.Controllers
         }
 
         // GET: Photos
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Photo.ToListAsync());
+            return View();
         }
 
         // GET: Photos/Details/5
@@ -54,14 +55,9 @@ namespace LetsTryMVC.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ImageUrl")] Photo photo)
+        public async Task<IActionResult> Create([Bind("Id,ImageName,Image")] Photo photo)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(photo);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+            
             return View(photo);
         }
 

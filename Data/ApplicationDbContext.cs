@@ -13,7 +13,8 @@ namespace LetsTryMVC.Data
             : base(options)
         {
         }
-        public DbSet<LetsTryMVC.Models.Product> Product { get; set; }
-        public DbSet<LetsTryMVC.Models.Photo> Photo { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<Photo> Photo { get; set; }
+        public DbSet<ProductCategory> Categories { get; set; }
     }
 }

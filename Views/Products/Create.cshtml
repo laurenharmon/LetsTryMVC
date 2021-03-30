@@ -1,8 +1,6 @@
-﻿@model LetsTryMVC.Models.Product
-
-@{
-    Layout = null;
-}
+﻿@using LetsTryMVC.ViewModels
+@model AddProductViewModel;
+ 
 
 <!DOCTYPE html>
 
@@ -33,6 +31,11 @@
                 <label asp-for="Price" class="control-label"></label>
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId">Product Type</label>
+                <select asp-for="CategoryId" asp-items="Model.Categories"></select>
+                <span asp-validation-for="CategoryId"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

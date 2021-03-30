@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LetsTryMVC.Data;
 using LetsTryMVC.Models;
+using LetsTryMVC.ViewModels;
 
 namespace LetsTryMVC.Controllers
 {
@@ -20,9 +21,9 @@ namespace LetsTryMVC.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Product.ToListAsync());
+            return View();
         }
 
         // GET: Products/Details/5
@@ -46,7 +47,9 @@ namespace LetsTryMVC.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
-            return View();
+            List<ProductCategory> categories = _context.Categories.ToList();
+            AddProductViewModel addProductViewModel = new AddProductViewModel(categories);
+            return View(addProductViewModel);
         }
 
         // POST: Products/Create
@@ -54,15 +57,26 @@ namespace LetsTryMVC.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price")] Product product)
+        public IActionResult Create(AddProductViewModel addProductViewModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ProductCategory category = _context.Categories.Find(addProductViewModel.CategoryId);
+                Product newProduct = new Product
+                {
+                    Name = addProductViewModel.Name,
+                    Description = addProductViewModel.Description,
+                    Price = addProductViewModel.Price,
+                    Category = category
+                };
+
+                _context.Product.Add(newProduct);
+                _context.SaveChanges();
+
+                return Redirect("/products");
             }
-            return View(product);
+
+            return View(addProductViewModel);
         }
 
         // GET: Products/Edit/5
