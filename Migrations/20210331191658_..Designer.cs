@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LetsTryMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210331153847_InitialAgainLol")]
-    partial class InitialAgainLol
+    [Migration("20210331191658_.")]
+    partial class _
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,6 +18,25 @@ namespace LetsTryMVC.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("LetsTryMVC.Models.CartItem", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CartItems");
+                });
 
             modelBuilder.Entity("LetsTryMVC.Models.Photo", b =>
                 {
@@ -28,8 +47,8 @@ namespace LetsTryMVC.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Image")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("longblob");
 
                     b.Property<string>("ImageName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -38,7 +57,7 @@ namespace LetsTryMVC.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Photo");
+                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("LetsTryMVC.Models.Product", b =>
@@ -46,6 +65,9 @@ namespace LetsTryMVC.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<string>("CartItemId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -61,9 +83,11 @@ namespace LetsTryMVC.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CartItemId");
+
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Product");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("LetsTryMVC.Models.ProductCategory", b =>
@@ -287,6 +311,10 @@ namespace LetsTryMVC.Migrations
 
             modelBuilder.Entity("LetsTryMVC.Models.Product", b =>
                 {
+                    b.HasOne("LetsTryMVC.Models.CartItem", null)
+                        .WithMany("Products")
+                        .HasForeignKey("CartItemId");
+
                     b.HasOne("LetsTryMVC.Models.ProductCategory", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")

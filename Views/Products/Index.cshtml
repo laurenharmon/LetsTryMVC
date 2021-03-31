@@ -2,33 +2,32 @@
 @model List<Product>
 
 <h1>Products</h1>
-
 <p>
     <a asp-controller="Products" asp-action="Create">Add Product To List</a>
 </p>
 
-
-    <p>
-        <a asp-controller="Products" asp-action="Delete">Remove Product From List</a>
-    </p>
-
-    <table class="table">
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Price</th>
-            <th scope="col">Category</th>
-
-        </tr>
-        @foreach (var product in Model)
-        {
+<table class="table">
     <tr>
-        <td><a asp-controller="Products" asp-action="Detail" asp-route-id="@product.Id">@product.Name</a></td>
-        <td>@product.Description</td>
-        <td>@product.Price</td>
-        <td>@product.Category.Name</td>
-        <td><a asp-controller="Products" asp-action="Edit" asp-route-id="@product.Id">Edit This Product</a></td>
-    </tr>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Price</th>
+        <th scope="col">Category</th>
+        <th scope="col">Add Item To Cart</th>
+        @*<th scope="col">Edit</th>
+            <th scope="col">Delete</th>*@
 
-        }
-    </table>
+    </tr>
+    @foreach (var product in Model)
+    {
+        <tr>
+            <td><a asp-controller="Products" asp-action="Detail" asp-route-id="@product.Id">@product.Name</a></td>
+            <td>@product.Description</td>
+            <td>@product.Price</td>
+            <td>@product.Category.Name</td>
+            <td><input type="submit" value="Add To Cart" class="btn btn-primary" /></td>
+            @*<td><a asp-controller="Products" asp-action="Edit" asp-route-id="@product.Id">Edit This Product</a></td>
+                <td><a asp-controller="Products" asp-action="Delete" asp-route-id="@product.Id">Delete This Product</a></td>*@
+        </tr>
+
+    }
+</table>

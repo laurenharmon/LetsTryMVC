@@ -70,7 +70,7 @@ namespace LetsTryMVC.Controllers
                     ImageName = addPhotoViewModel.ImageName,
                     Image = addPhotoViewModel.Image,
                     Category = category,
-                    FileType = FileType.Upload
+
                 };
 
                 _context.Photos.Add(photo);
