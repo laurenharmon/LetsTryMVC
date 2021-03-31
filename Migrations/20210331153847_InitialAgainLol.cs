@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LetsTryMVC.Migrations
 {
-    public partial class InitialWithIdentity : Migration
+    public partial class InitialAgainLol : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -174,17 +174,17 @@ namespace LetsTryMVC.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     ImageName = table.Column<string>(nullable: true),
                     Image = table.Column<string>(nullable: true),
-                    ProductCategoryId = table.Column<int>(nullable: true)
+                    CategoryId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Photo", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Photo_Categories_ProductCategoryId",
-                        column: x => x.ProductCategoryId,
+                        name: "FK_Photo_Categories_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -247,9 +247,9 @@ namespace LetsTryMVC.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photo_ProductCategoryId",
+                name: "IX_Photo_CategoryId",
                 table: "Photo",
-                column: "ProductCategoryId");
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product_CategoryId",

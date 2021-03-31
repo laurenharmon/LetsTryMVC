@@ -24,7 +24,7 @@ namespace LetsTryMVC.Controllers
         // GET: Photos
         public IActionResult Index()
         {
-            List<Photo> photos = _context.Photo
+            List<Photo> photos = _context.Photos
                 .Include(x => x.Category)
                 .ToList();
 
@@ -39,7 +39,7 @@ namespace LetsTryMVC.Controllers
                 return NotFound();
             }
 
-            var photo = await _context.Photo
+            var photo = await _context.Photos
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (photo == null)
             {
@@ -65,14 +65,15 @@ namespace LetsTryMVC.Controllers
             if (ModelState.IsValid)
             {
                 ProductCategory category = _context.Categories.Find(addPhotoViewModel.CategoryId);
-                Photo newPhoto = new Photo
+                Photo photo = new Photo
                 {
                     ImageName = addPhotoViewModel.ImageName,
                     Image = addPhotoViewModel.Image,
-                    Category = category
+                    Category = category,
+                    FileType = FileType.Upload
                 };
 
-                _context.Photo.Add(newPhoto);
+                _context.Photos.Add(photo);
                 _context.SaveChanges();
 
                 return Redirect("/photos");
@@ -89,7 +90,7 @@ namespace LetsTryMVC.Controllers
                 return NotFound();
             }
 
-            var photo = await _context.Photo.FindAsync(id);
+            var photo = await _context.Photos.FindAsync(id);
             if (photo == null)
             {
                 return NotFound();
@@ -140,7 +141,7 @@ namespace LetsTryMVC.Controllers
                 return NotFound();
             }
 
-            var photo = await _context.Photo
+            var photo = await _context.Photos
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (photo == null)
             {
@@ -155,15 +156,15 @@ namespace LetsTryMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var photo = await _context.Photo.FindAsync(id);
-            _context.Photo.Remove(photo);
+            var photo = await _context.Photos.FindAsync(id);
+            _context.Photos.Remove(photo);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PhotoExists(int id)
         {
-            return _context.Photo.Any(e => e.Id == id);
+            return _context.Photos.Any(e => e.Id == id);
         }
     }
 }

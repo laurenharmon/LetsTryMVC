@@ -14,7 +14,7 @@ namespace LetsTryMVC.ViewModels
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Name must be between 3 and 50 characters.")]
         public string ImageName { get; set; }
 
-        public string Image { get; set; }
+        public byte[] Image { get; set; }
 
         public int CategoryId { get; set; }
 

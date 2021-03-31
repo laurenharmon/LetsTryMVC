@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LetsTryMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210330163941_InitialWithIdentity")]
-    partial class InitialWithIdentity
+    [Migration("20210331153847_InitialAgainLol")]
+    partial class InitialAgainLol
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -25,18 +25,18 @@ namespace LetsTryMVC.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Image")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("ImageName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int?>("ProductCategoryId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductCategoryId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Photo");
                 });
@@ -278,15 +278,17 @@ namespace LetsTryMVC.Migrations
 
             modelBuilder.Entity("LetsTryMVC.Models.Photo", b =>
                 {
-                    b.HasOne("LetsTryMVC.Models.ProductCategory", null)
+                    b.HasOne("LetsTryMVC.Models.ProductCategory", "Category")
                         .WithMany("Photos")
-                        .HasForeignKey("ProductCategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LetsTryMVC.Models.Product", b =>
                 {
                     b.HasOne("LetsTryMVC.Models.ProductCategory", "Category")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

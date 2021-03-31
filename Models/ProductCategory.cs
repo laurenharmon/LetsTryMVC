@@ -10,7 +10,7 @@ namespace LetsTryMVC.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public List<Product> Products { get; set; }
-        public List<Photo> Photos { get; set; }
+        public virtual ICollection<Photo> Photos { get; set; }
 
         public ProductCategory(string name)
         {

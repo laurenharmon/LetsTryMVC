@@ -1,11 +1,11 @@
-﻿@using LetsTryMVC.ViewModels
-@model AddProductCategoryViewModel;
+﻿@using LetsTryMVC.Models
+@model List<ProductCategory>;
 
 <h1>Products Categories</h1>
 
 <div>
     <p>
-        <a asp-controller="ProductsCategory" asp-action="Create">Add Category</a>
+        <a asp-controller="ProductCategory" asp-action="Create">Add Category</a>
     </p>
     <p>
         <a asp-controller="ProductCategory" asp-action="Delete">Remove Category</a>
@@ -17,12 +17,11 @@
             <th scope="col">Name</th>
 
         </tr>
-        @for(int i = 0; i < 10; i++)
+        @foreach(var category in Model)
         {
             <tr>
-                <td>@Model.Name</td>
+                <td>@category.Name</td>
             </tr>
 
         }
     </table>
-}

@@ -1,32 +1,24 @@
-﻿@using LetsTryMVC.ViewModels
-@model AddPhotoViewModel
-
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Create</title>
-</head>
-<body>
+﻿
+@model LetsTryMVC.ViewModels.AddPhotoViewModel
 
 <h4>Photo</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger form-group"></div>
+        <div asp-validation-summary="ModelOnly" class="text-danger form-group"></div>
+        @using (Html.BeginForm("Create", "Photo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
             <div class="form-group">
                 <label asp-for="ImageName" class="control-label"></label>
                 <input asp-for="ImageName" class="form-control" />
                 <span asp-validation-for="ImageName" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @Html.TextBoxFor(model => model.Image, new { type="file" })
+            @*<div class="form-group">
                 <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" id="Image" class="form-control" type="file" />
+                <input asp-for="Image" id="Image" class="form-control" type="file" name="upload" />
                 <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <label asp-for="CategoryId">Project</label>
                 <select asp-for="CategoryId" asp-items="Model.Categories"></select>
@@ -35,7 +27,9 @@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
-        </form>
+        }
+
+
     </div>
 </div>
 
@@ -46,5 +40,3 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-</body>
-</html>

@@ -11,19 +11,20 @@ namespace LetsTryMVC.Controllers
 {
     public class ProductCategoryController : Controller
     {
-        private ApplicationDbContext context;
+        private ApplicationDbContext _context;
 
         public ProductCategoryController(ApplicationDbContext dbContext)
         {
-            context = dbContext;
+            _context = dbContext;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            ViewBag.title = "All Categories";
+            List<ProductCategory> categories = _context.Categories
+               .ToList();
 
-            return View();
+            return View(categories);
         }
 
         [HttpGet]
@@ -44,8 +45,8 @@ namespace LetsTryMVC.Controllers
                     Name = addProductCategoryViewModel.Name
                 };
 
-                context.Categories.Add(newCategory);
-                context.SaveChanges();
+                _context.Categories.Add(newCategory);
+                _context.SaveChanges();
 
                 return Redirect("/productcategory");
             }
