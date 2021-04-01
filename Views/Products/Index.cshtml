@@ -20,11 +20,11 @@
     @foreach (var product in Model)
     {
         <tr>
-            <td><a asp-controller="Products" asp-action="Detail" asp-route-id="@product.Id">@product.Name</a></td>
+            <td>@product.Name</td>
             <td>@product.Description</td>
             <td>@product.Price</td>
             <td>@product.Category.Name</td>
-            <td><input type="submit" value="Add To Cart" class="btn btn-primary" /></td>
+            <td><a asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-id="@product.Id">Add To Cart</a></td>
             @*<td><a asp-controller="Products" asp-action="Edit" asp-route-id="@product.Id">Edit This Product</a></td>
                 <td><a asp-controller="Products" asp-action="Delete" asp-route-id="@product.Id">Delete This Product</a></td>*@
         </tr>

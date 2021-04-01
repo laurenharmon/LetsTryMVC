@@ -26,7 +26,7 @@ namespace LetsTryMVC.Controllers
             return View(items);
         }
 
-        public void AddToCart(int id)
+        public IActionResult AddToCart(int id)
         {
             var cartItem = _context.CartItems
                 .SingleOrDefault(c => c.ProductId == id);
@@ -48,7 +48,9 @@ namespace LetsTryMVC.Controllers
                 cartItem.Quantity++;
             }
             _context.SaveChanges();
+            
+            return Redirect("/shoppingcart");
         }
-
+        
     }
 }

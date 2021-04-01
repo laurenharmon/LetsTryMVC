@@ -1,4 +1,5 @@
 ﻿using LetsTryMVC.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,12 @@ namespace LetsTryMVC.ViewModels
 {
     public class AddPhotoViewModel
     {
+        public string Title { get; set; }
+
         [Required(ErrorMessage = "Name is required.")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Name must be between 3 and 50 characters.")]
         public string ImageName { get; set; }
-
-        public byte[] Image { get; set; }
+        public IFormFile ImageFile { get; set; }
 
         public int CategoryId { get; set; }
 

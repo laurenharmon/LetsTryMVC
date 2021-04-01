@@ -1,38 +1,47 @@
-﻿@using LetsTryMVC.Models
-@model List<Photo>
+﻿@model IEnumerable<LetsTryMVC.Models.Photo>
 
-<h1>Photos</h1>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
 
 <p>
-    <a asp-controller="Photos" asp-action="Create">Add Photo</a>
+    <a asp-action="Create">Create New</a>
 </p>
-
-
-@if (Model.Count == 0)
-{
-    <p>No Pics Yet!</p>
-}
-else
-{
-    <p>
-        <a asp-controller="Photos" asp-action="Delete">Delete Photo</a>
-    </p>
-
-    <table class="table">
+<table class="table">
+    <thead>
         <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Image</th>
-            <th scope="col">Category</th>
-
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                Image
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th></th>
         </tr>
-        @foreach (var image in Model)
-        {
-            <tr>
-                <td><a asp-controller="Products" asp-action="Detail" asp-route-id="@image.Id">@image.ImageName</a></td>
-                <td>Insert Picture here from database</td>
-                <td>@image.Category.Name</td>
-            </tr>
-
-        }
-    </table>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                <img src="@("~/image/"+item.ImageName)" asp-append-version="true" width="250" height="250" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
 }
+    </tbody>
+</table>

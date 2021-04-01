@@ -7,28 +7,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LetsTryMVC.Data;
 using LetsTryMVC.Models;
+using Microsoft.AspNetCore.Hosting;
 using System.IO;
-using LetsTryMVC.ViewModels;
 
 namespace LetsTryMVC.Controllers
 {
     public class PhotosController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public PhotosController(ApplicationDbContext context)
+        public PhotosController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            this._hostEnvironment = hostEnvironment;
         }
 
         // GET: Photos
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            List<Photo> photos = _context.Photos
-                .Include(x => x.Category)
-                .ToList();
-
-            return View(photos);
+            var applicationDbContext = _context.Photos.Include(p => p.Category);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Photos/Details/5
@@ -40,6 +39,7 @@ namespace LetsTryMVC.Controllers
             }
 
             var photo = await _context.Photos
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (photo == null)
             {
@@ -52,34 +52,35 @@ namespace LetsTryMVC.Controllers
         // GET: Photos/Create
         public IActionResult Create()
         {
-            List<ProductCategory> categories = _context.Categories.ToList();
-            AddPhotoViewModel addPhotoViewModel = new AddPhotoViewModel(categories);
-            return View(addPhotoViewModel);
+            ViewData["Categories"] = new SelectList(_context.Categories, "Id", "Name");
+            return View();
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(AddPhotoViewModel addPhotoViewModel)
+        public async Task<IActionResult> Create([Bind("Id,Title,ImageFile,CategoryId")] Photo photo)
         {
+            ProductCategory category = _context.Categories.Find(photo.CategoryId);
             if (ModelState.IsValid)
             {
-                ProductCategory category = _context.Categories.Find(addPhotoViewModel.CategoryId);
-                Photo photo = new Photo
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string fileName = Path.GetFileNameWithoutExtension(photo.ImageFile.FileName);
+                string extension = Path.GetExtension(photo.ImageFile.FileName);
+                photo.ImageName = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                string path = Path.Combine(wwwRootPath + "/Image/", fileName);
+                using (var fileStream = new FileStream(path, FileMode.Create))
                 {
-                    ImageName = addPhotoViewModel.ImageName,
-                    Image = addPhotoViewModel.Image,
-                    Category = category,
+                    await photo.ImageFile.CopyToAsync(fileStream);
+                }
+                photo.Category = category;
 
-                };
-
-                _context.Photos.Add(photo);
-                _context.SaveChanges();
-
-                return Redirect("/photos");
+                //Insert record
+                _context.Add(photo);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
+            return View(photo);
 
-            return View(addPhotoViewModel);
         }
 
         // GET: Photos/Edit/5
@@ -95,6 +96,7 @@ namespace LetsTryMVC.Controllers
             {
                 return NotFound();
             }
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", photo.CategoryId);
             return View(photo);
         }
 
@@ -103,7 +105,7 @@ namespace LetsTryMVC.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ImageUrl")] Photo photo)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ImageName,CategoryId")] Photo photo)
         {
             if (id != photo.Id)
             {
@@ -130,6 +132,7 @@ namespace LetsTryMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", photo.CategoryId);
             return View(photo);
         }
 
@@ -142,6 +145,7 @@ namespace LetsTryMVC.Controllers
             }
 
             var photo = await _context.Photos
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (photo == null)
             {
@@ -156,8 +160,14 @@ namespace LetsTryMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var photo = await _context.Photos.FindAsync(id);
-            _context.Photos.Remove(photo);
+            var imageModel = await _context.Photos.FindAsync(id);
+
+            //delete image from wwwroot/image
+            var imagePath = Path.Combine(_hostEnvironment.WebRootPath, "image", imageModel.ImageName);
+            if (System.IO.File.Exists(imagePath))
+                System.IO.File.Delete(imagePath);
+            //delete the record
+            _context.Photos.Remove(imageModel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
