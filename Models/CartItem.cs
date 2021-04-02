@@ -8,7 +8,9 @@ namespace LetsTryMVC.Models
 {
     public class CartItem
     { 
-        public string Id { get; set; }
+        
+        public int Id { get; set; }
+        public int CartId { get; set; }
         public int Quantity { get; set; }
         public DateTime DateCreated { get; set; }
         public int ProductId { get; set; }

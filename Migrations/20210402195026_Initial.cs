@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LetsTryMVC.Migrations
 {
-    public partial class Photo : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -197,7 +197,7 @@ namespace LetsTryMVC.Migrations
                     Description = table.Column<string>(nullable: true),
                     Price = table.Column<int>(nullable: false),
                     CategoryId = table.Column<int>(nullable: false),
-                    CartItemId = table.Column<string>(nullable: true)
+                    CartItemId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -214,7 +214,9 @@ namespace LetsTryMVC.Migrations
                 name: "CartItems",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CartId = table.Column<int>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
                     DateCreated = table.Column<DateTime>(nullable: false),
                     ProductId = table.Column<int>(nullable: false)

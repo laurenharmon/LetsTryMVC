@@ -23,6 +23,18 @@ namespace LetsTryMVC.Models
             Price = price;
         }
 
+        private List<Product> products;
+        public List<Product> findAll()
+        {
+            return this.products;
+        }
+
+        public Product find(string id)
+        {
+            return this.products.Single(p => p.Id.ToString() == id);
+        }
+
+
         public override bool Equals(object obj)
         {
             return obj is Product product &&

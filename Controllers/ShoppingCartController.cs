@@ -18,39 +18,57 @@ namespace LetsTryMVC.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
-        {
-            List<CartItem> items = _context.CartItems
-               .ToList();
 
-            return View(items);
+        public ActionResult Index()
+        {
+            return View();
         }
 
-        public IActionResult AddToCart(int id)
+        public ActionResult Buy(string id)
         {
-            var cartItem = _context.CartItems
-                .SingleOrDefault(c => c.ProductId == id);
-
-            if (cartItem == null)
+            Product productModel = new Product();
+            if (Session["cart"] == null)
             {
-                cartItem = new CartItem
-                {
-                    ProductId = id,
-                    Product = _context.Products.SingleOrDefault(
-                    p => p.Id == id),
-                    Quantity = 1,
-                    DateCreated = DateTime.Now
-                };            
-                _context.SaveChanges();
+                List<CartItem> cart = new List<CartItem>();
+                cart.Add(new CartItem { Product = productModel.find(id), Quantity = 1 });
+                Session["cart"] = cart;
             }
             else
             {
-                cartItem.Quantity++;
+                List<CartItem> cart = (List<CartItem>)Session["cart"];
+                int index = doesExist(id);
+                if (index != -1)
+                {
+                    cart[index].Quantity++;
+                }
+                else
+                {
+                    cart.Add(new CartItem { Product = productModel.find(id), Quantity = 1 });
+                }
+                Session["cart"] = cart;
             }
-            _context.SaveChanges();
-            
-            return Redirect("/shoppingcart");
+            return RedirectToAction("Index");
         }
-        
+
+        public ActionResult Remove(string id)
+        {
+            List<CartItem> cart = (List<CartItem>)Session["cart"];
+            int index = doesExist(id);
+            cart.RemoveAt(index);
+            Session["cart"] = cart;
+            return RedirectToAction("Index");
+        }
+
+        private int doesExist(string id)
+        {
+            List<CartItem> cart = (List<CartItem>)Session["cart"];
+            for (int i = 0; i < cart.Count; i++)
+                if (cart[i].Product.Id.Equals(id))
+                    return i;
+            return -1;
+        }
+
     }
+
 }
+
