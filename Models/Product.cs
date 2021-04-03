@@ -10,9 +10,11 @@ namespace LetsTryMVC.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int Price { get; set; }
+        public decimal Price { get; set; }
+        public int Quantity { get; set; }
         public ProductCategory Category { get; set; }
         public int CategoryId { get; set; }
+
 
         public Product() { }
 
@@ -21,17 +23,6 @@ namespace LetsTryMVC.Models
             Name = name;
             Description = description;
             Price = price;
-        }
-
-        private List<Product> products;
-        public List<Product> findAll()
-        {
-            return this.products;
-        }
-
-        public Product find(string id)
-        {
-            return this.products.Single(p => p.Id.ToString() == id);
         }
 
 

@@ -68,7 +68,8 @@ namespace LetsTryMVC.Controllers
                     Name = addProductViewModel.Name,
                     Description = addProductViewModel.Description,
                     Price = addProductViewModel.Price,
-                    Category = category
+                    Category = category,
+
                 };
 
                 _context.Products.Add(newProduct);
@@ -77,7 +78,7 @@ namespace LetsTryMVC.Controllers
                 return Redirect("/products");
             }
 
-            return View(addProductViewModel);
+            return RedirectToAction("Create");
         }
 
         // GET: Products/Edit/5

@@ -1,4 +1,5 @@
 ﻿using LetsTryMVC.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -20,6 +21,13 @@ namespace LetsTryMVC.Controllers
 
         public IActionResult Index()
         {
+            HttpContext.Session.SetString("Test", "Working!");
+            return View();
+        }
+
+        public IActionResult About()
+        {
+            ViewBag.Message = HttpContext.Session.GetString("Test");
             return View();
         }
 

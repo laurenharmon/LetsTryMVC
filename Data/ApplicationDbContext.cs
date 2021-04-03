@@ -16,6 +16,5 @@ namespace LetsTryMVC.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<ProductCategory> Categories { get; set; }
-        public DbSet<CartItem> CartItems { get; set; }
     }
 }
