@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,9 +13,12 @@ namespace LetsTryMVC.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public int Quantity { get; set; }
-        public ProductCategory Category { get; set; }
+        public virtual ProductCategory Category { get; set; }
         public int CategoryId { get; set; }
+        [Display(Name = "Updated At")]
+        public DateTime LastUpdated { get; set; }
+
+        public virtual ICollection<OrderedProduct> OrderedProducts { get; set; }
 
 
         public Product() { }

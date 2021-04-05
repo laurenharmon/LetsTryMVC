@@ -36,6 +36,11 @@
                         </li>
                     </ul>
                 </div>
+                @*CART???*@
+                @*@await Component.InvokeAsync("CartSummary")*@
+                @*END*@
+
+
             </div>
         </nav>
     </header>
@@ -54,5 +59,41 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
+
+    @*TESTING THIS AREA*@
+    <script src="~/Content/Js/ResponsiveSlider.js"></script>
+    <script type="text/javascript">
+        $(".rslides").responsiveSlides({
+            auto: true, // Boolean: Animate automatically, true or false
+            speed: 500 // Integer: Speed of the transition, in milliseconds
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".RemoveLink").click(function (e) {
+                e.preventDefault();
+                // Get the id from the link
+                var recordToDelete = $(this).attr("data-id");
+                if (recordToDelete != '') {
+                    // Perform the ajax post
+                    $.post("/ShoppingCart/RemoveFromCart", { "id": recordToDelete },
+                        function (data) {
+                            // Successful requests get here
+                            // Update the page elements
+                            if (data.ItemCount == 0) {
+                                $('#row-' + data.DeleteId).fadeOut('slow');
+                            } else {
+                                $('#item-count-' + data.DeleteId).text(data.ItemCount);
+                            }
+                            $('#cart-total').text(data.CartTotal);
+                            $('#update-message').text(data.Message);
+                            $('#cart-status').text('Cart (' + data.CartCount + ')');
+                        });
+                }
+            });
+        })
+    </script>
+    @*ENDS HERE*@
 </body>
 </html>

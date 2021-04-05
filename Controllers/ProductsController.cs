@@ -69,7 +69,7 @@ namespace LetsTryMVC.Controllers
                     Description = addProductViewModel.Description,
                     Price = addProductViewModel.Price,
                     Category = category,
-
+                    LastUpdated = addProductViewModel.LastUpdated
                 };
 
                 _context.Products.Add(newProduct);
@@ -95,15 +95,17 @@ namespace LetsTryMVC.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Name,Description,Price,CategoryId,Category")] Product product)
+        public IActionResult Edit(int id, [Bind("Id,Name,Description,Price,CategoryId,Category,LastUpdated")] Product product)
         {
             Product editProduct = _context.Products.Find(id);
+            ProductCategory category = _context.Categories.Find(product.CategoryId);
 
             editProduct.Name = product.Name;
             editProduct.Description = product.Description;
             editProduct.Price = product.Price;
-            //editProduct.CategoryId = product.CategoryId;
+            editProduct.CategoryId = product.CategoryId;
             //editProduct.Category = product.Category;
+            editProduct.LastUpdated = product.LastUpdated;
 
             _context.SaveChanges();
 

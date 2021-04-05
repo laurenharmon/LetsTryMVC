@@ -21,13 +21,12 @@ namespace LetsTryMVC.Controllers
 
         public IActionResult Index()
         {
-            HttpContext.Session.SetString("Test", "Working!");
             return View();
         }
 
-        public IActionResult About()
+
+        public IActionResult Contact()
         {
-            ViewBag.Message = HttpContext.Session.GetString("Test");
             return View();
         }
 

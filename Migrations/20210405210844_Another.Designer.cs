@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LetsTryMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210403005223_All")]
-    partial class All
+    [Migration("20210405210844_Another")]
+    partial class Another
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -25,9 +25,111 @@ namespace LetsTryMVC.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("CartId")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Cart");
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("LetsTryMVC.Models.CustomerOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("varchar(70) CHARACTER SET utf8mb4")
+                        .HasMaxLength(70);
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("varchar(40) CHARACTER SET utf8mb4")
+                        .HasMaxLength(40);
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("varchar(40) CHARACTER SET utf8mb4")
+                        .HasMaxLength(40);
+
+                    b.Property<string>("CustomerUserName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("varchar(160) CHARACTER SET utf8mb4")
+                        .HasMaxLength(160);
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("varchar(160) CHARACTER SET utf8mb4")
+                        .HasMaxLength(160);
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("varchar(24) CHARACTER SET utf8mb4")
+                        .HasMaxLength(24);
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("varchar(10) CHARACTER SET utf8mb4")
+                        .HasMaxLength(10);
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("varchar(40) CHARACTER SET utf8mb4")
+                        .HasMaxLength(40);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CustomerOrders");
+                });
+
+            modelBuilder.Entity("LetsTryMVC.Models.OrderedProduct", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("CustomerOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductId1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId");
+
+                    b.HasIndex("CustomerOrderId");
+
+                    b.HasIndex("ProductId1");
+
+                    b.ToTable("OrderedProducts");
                 });
 
             modelBuilder.Entity("LetsTryMVC.Models.Photo", b =>
@@ -58,14 +160,14 @@ namespace LetsTryMVC.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("CartId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -73,12 +175,7 @@ namespace LetsTryMVC.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(65,30)");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("CartId");
 
                     b.HasIndex("CategoryId");
 
@@ -295,6 +392,28 @@ namespace LetsTryMVC.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("LetsTryMVC.Models.Cart", b =>
+                {
+                    b.HasOne("LetsTryMVC.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LetsTryMVC.Models.OrderedProduct", b =>
+                {
+                    b.HasOne("LetsTryMVC.Models.CustomerOrder", "CustomerOrder")
+                        .WithMany()
+                        .HasForeignKey("CustomerOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LetsTryMVC.Models.Product", "Product")
+                        .WithMany("OrderedProducts")
+                        .HasForeignKey("ProductId1");
+                });
+
             modelBuilder.Entity("LetsTryMVC.Models.Photo", b =>
                 {
                     b.HasOne("LetsTryMVC.Models.ProductCategory", "Category")
@@ -306,10 +425,6 @@ namespace LetsTryMVC.Migrations
 
             modelBuilder.Entity("LetsTryMVC.Models.Product", b =>
                 {
-                    b.HasOne("LetsTryMVC.Models.Cart", null)
-                        .WithMany("Products")
-                        .HasForeignKey("CartId");
-
                     b.HasOne("LetsTryMVC.Models.ProductCategory", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")

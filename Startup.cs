@@ -31,9 +31,6 @@ namespace LetsTryMVC
 
             services.AddSession();
 
-            //services.AddMvc(options =>
-            //    options.EnableEndpointRouting = false);
-
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -66,12 +63,6 @@ namespace LetsTryMVC
 
             app.UseSession();
 
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute(
-            //        name: "default",
-            //        template: "{controller=Home}/{action=Index}/{id?}");
-            //});
 
             app.UseAuthentication();
             app.UseAuthorization();

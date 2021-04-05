@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LetsTryMVC.Migrations
 {
-    public partial class All : Migration
+    public partial class Another : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -48,18 +48,6 @@ namespace LetsTryMVC.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cart",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cart", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
@@ -70,6 +58,30 @@ namespace LetsTryMVC.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CustomerOrders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    FirstName = table.Column<string>(maxLength: 160, nullable: false),
+                    LastName = table.Column<string>(maxLength: 160, nullable: false),
+                    Address = table.Column<string>(maxLength: 70, nullable: false),
+                    City = table.Column<string>(maxLength: 40, nullable: false),
+                    State = table.Column<string>(maxLength: 40, nullable: false),
+                    PostalCode = table.Column<string>(maxLength: 10, nullable: false),
+                    Country = table.Column<string>(maxLength: 40, nullable: false),
+                    Phone = table.Column<string>(maxLength: 24, nullable: false),
+                    Email = table.Column<string>(nullable: false),
+                    DateCreated = table.Column<DateTime>(nullable: false),
+                    Amount = table.Column<decimal>(nullable: false),
+                    CustomerUserName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomerOrders", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -208,25 +220,67 @@ namespace LetsTryMVC.Migrations
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Price = table.Column<decimal>(nullable: false),
-                    Quantity = table.Column<int>(nullable: false),
                     CategoryId = table.Column<int>(nullable: false),
-                    CartId = table.Column<int>(nullable: true)
+                    LastUpdated = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Products_Cart_CartId",
-                        column: x => x.CartId,
-                        principalTable: "Cart",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Products_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Carts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CartId = table.Column<string>(nullable: true),
+                    ProductId = table.Column<int>(nullable: false),
+                    Count = table.Column<int>(nullable: false),
+                    DateCreated = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Carts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Carts_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderedProducts",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CustomerOrderId = table.Column<int>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
+                    ProductId1 = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderedProducts", x => x.ProductId);
+                    table.ForeignKey(
+                        name: "FK_OrderedProducts_CustomerOrders_CustomerOrderId",
+                        column: x => x.CustomerOrderId,
+                        principalTable: "CustomerOrders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderedProducts_Products_ProductId1",
+                        column: x => x.ProductId1,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -267,14 +321,24 @@ namespace LetsTryMVC.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Carts_ProductId",
+                table: "Carts",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderedProducts_CustomerOrderId",
+                table: "OrderedProducts",
+                column: "CustomerOrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderedProducts_ProductId1",
+                table: "OrderedProducts",
+                column: "ProductId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Photos_CategoryId",
                 table: "Photos",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Products_CartId",
-                table: "Products",
-                column: "CartId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
@@ -300,10 +364,13 @@ namespace LetsTryMVC.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Photos");
+                name: "Carts");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "OrderedProducts");
+
+            migrationBuilder.DropTable(
+                name: "Photos");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -312,7 +379,10 @@ namespace LetsTryMVC.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Cart");
+                name: "CustomerOrders");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Categories");

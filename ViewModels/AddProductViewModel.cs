@@ -20,6 +20,7 @@ namespace LetsTryMVC.ViewModels
 
         [Required(ErrorMessage = "Price is required.")]
         public int Price { get; set; }
+        public DateTime LastUpdated { get; set; }
 
         public int CategoryId { get; set; }
 
