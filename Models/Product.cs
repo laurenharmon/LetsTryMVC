@@ -18,8 +18,6 @@ namespace LetsTryMVC.Models
         [Display(Name = "Updated At")]
         public DateTime LastUpdated { get; set; }
 
-        public virtual ICollection<OrderedProduct> OrderedProducts { get; set; }
-
 
         public Product() { }
 

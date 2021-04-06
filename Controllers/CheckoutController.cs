@@ -1,5 +1,6 @@
 ﻿using LetsTryMVC.Data;
 using LetsTryMVC.Models;
+using LetsTryMVC.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,74 +12,76 @@ namespace LetsTryMVC.Controllers
 {
     public class CheckoutController : Controller
     {
-        //private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        //public CheckoutController(ApplicationDbContext context)
-        //{
-        //    _context = context;
-        //}
-        //const String PromoCode = "FREE";
+        public CheckoutController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
 
-     
-        //public ActionResult AddressAndPayment()
-        //{
-        //    return View();
-        //}
+ 
+        const String PromoCode = "DEVELOPER";
 
-        //[HttpPost]
-        //public ActionResult AddressAndPayment(IFormCollection values)
-        //{
-        //    var order = new CustomerOrder();
+        public IActionResult Index()
+        {
+            return View();
+        }
 
-        //    TryUpdateModelAsync(order);
 
-        //    try
-        //    {
-        //        if (string.Equals(values["PromoCode"], PromoCode, StringComparison.OrdinalIgnoreCase) == false)
-        //        {
-        //            return View(order);
-        //        }
-        //        else
-        //        {
-        //            order.CustomerUserName = User.Identity.Name;
-        //            order.DateCreated = DateTime.Now;
+        public IActionResult AddressAndPayment(decimal amount)
+        {
+            CustomerOrderViewModel customerOrderViewModel = new CustomerOrderViewModel(amount);
+            return View(customerOrderViewModel);
+        }
 
-        //            _context.CustomerOrders.Add(order);
-        //            _context.SaveChanges();
+        [HttpPost]
+        public IActionResult AddressAndPayment(CustomerOrderViewModel orderViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                CustomerOrder newOrder = new CustomerOrder
+                {
+                    FirstName = orderViewModel.FirstName,
+                    LastName = orderViewModel.LastName,
+                    Address = orderViewModel.Address,
+                    City = orderViewModel.City,
+                    State = orderViewModel.State,
+                    PostalCode = orderViewModel.PostalCode,
+                    Country = orderViewModel.Country,
+                    Phone = orderViewModel.Phone,
+                    Email = orderViewModel.Email,
+                    DateCreated = orderViewModel.DateCreated,
+                    Amount = orderViewModel.Amount
+                };
+ 
+                _context.CustomerOrders.Add(newOrder);
+                _context.SaveChanges();
 
-        //            var cart = GetCart();
-        //            cart.CreateOrder(order);
+                return RedirectToAction("EmptyCart", "ShoppingCart", new { id = newOrder.Id });
+            }
+            else
+            {
+                return RedirectToAction("AddressAndPayment");
+            }
+ 
+        }
 
-        //            _context.SaveChanges();//we have received the total amount lets update it
+        public IActionResult Complete(int id)
+        {
+            bool isValid = _context.CustomerOrders.Any(
+                o => o.Id == id);
 
-        //            return RedirectToAction("Complete", new { id = order.Id });
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ex.InnerException.ToString();
-        //        return View(order);
-        //    }
-        //}
+            if (isValid)
+            {
+                return View(id);
+            }
+            else
+            {
+                return View("Error");
+            }
 
-        //public ActionResult Complete(int id)
-        //{
-        //    bool isValid = _context.CustomerOrders.Any(
-        //        o => o.Id == id);
 
-        //    if (isValid)
-        //    {
-        //        return View(id);
-        //    }
-        //    else
-        //    {
-        //        return View("Error");
-        //    }
-        //}
+        }            
     }
 }

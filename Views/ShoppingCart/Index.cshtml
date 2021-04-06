@@ -51,7 +51,6 @@ else
             </td>
             <td>
                 @Html.ActionLink("Remove From Cart", "RemoveFromCart", "ShoppingCart", new { id = item.ProductId }, new { @class = "btn btn-info" })
-                Remove from cart
             </td>
         </tr>
     }
@@ -73,7 +72,7 @@ else
         <a href="~/Products/Index">Continue shopping>></a>
     </p>
     <p class="button">
-        @Html.ActionLink("Checkout>> ", "AddressAndPayment", "Checkout")
+        @Html.ActionLink("Checkout ", "AddressAndPayment", "Checkout", new { amount = Model.CartTotal })
     </p>
 }
 

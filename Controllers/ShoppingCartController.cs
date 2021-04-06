@@ -22,6 +22,7 @@ namespace LetsTryMVC.Controllers
             _context = context;
         }
 
+
         public ActionResult Index()
         {
             ShoppingCart cart = GetCart(this.HttpContext);
@@ -86,17 +87,19 @@ namespace LetsTryMVC.Controllers
             return RedirectToAction("Index");
         }
 
-        //public void EmptyCart()
-        //{
-        //    var Cart = GetCart();
-        //    var cartItems = _context.Carts.Where(cart => cart.CartId == Cart.ShoppingCartId);
+        public IActionResult EmptyCart(int id)
+        {
+            int orderId = id;
+            var Cart = GetCart();
+            var cartItems = _context.Carts.Where(cart => cart.CartId == Cart.ShoppingCartId);
 
-        //    foreach (var cartItem in cartItems)
-        //    {
-        //        _context.Carts.Remove(cartItem);
-        //    }
-        //    _context.SaveChanges();
-        //}
+            foreach (var cartItem in cartItems)
+            {
+                _context.Carts.Remove(cartItem);
+            }
+            _context.SaveChanges();
+            return RedirectToAction("Complete", "Checkout", new { id = orderId });
+        }
 
 
         public  ShoppingCart GetCart(HttpContext context)
@@ -143,34 +146,12 @@ namespace LetsTryMVC.Controllers
             return total ?? decimal.Zero;
         }
 
-        //public int CreateOrder(CustomerOrder customerOrder)
-        //{
-        //    decimal orderTotal = 0;
+        public IActionResult CreateOrder(CustomerOrder customerOrder)
+        {
+ 
 
-        //    var cartItems = GetCartItems();
-
-        //    foreach (var item in cartItems)
-        //    {
-        //        var orderedProduct = new OrderedProduct
-        //        {
-        //            ProductId = item.ProductId,
-        //            CustomerOrderId = customerOrder.Id,
-        //            Quantity = item.Count
-        //        };
-
-        //        orderTotal += (item.Count * item.Product.Price);
-
-        //        _context.OrderedProducts.Add(orderedProduct);
-        //    }
-
-        //    customerOrder.Amount = orderTotal;
-
-        //    _context.SaveChanges();
-
-        //    EmptyCart();
-
-        //    return customerOrder.Id;
-        //}
+            return RedirectToAction("Complete", "Checkout", new { id = customerOrder.Id });
+        }
 
         public string GetCartId(HttpContext context)
         {
