@@ -16,7 +16,7 @@ namespace LetsTryMVC.Controllers
         {
             _context = context;
         }
-        public ActionResult Index(int? id)
+        public IActionResult Index(int? id)
         {
             if (id == null)
             {

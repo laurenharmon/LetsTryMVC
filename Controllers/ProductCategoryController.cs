@@ -52,5 +52,34 @@ namespace LetsTryMVC.Controllers
             }
             return View();
         }
+
+       
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var category = _context.Categories
+                .First(m => m.Id == id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return View(category);
+        }
+
+        // POST: Categories/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            ProductCategory category = _context.Categories.Find(id);
+            _context.Categories.Remove(category);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
     }
 }

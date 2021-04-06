@@ -1,6 +1,7 @@
 ﻿using LetsTryMVC.Data;
 using LetsTryMVC.Models;
 using LetsTryMVC.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,41 +23,87 @@ namespace LetsTryMVC.Controllers
 
         public ActionResult Index()
         {
-            var cart = ShoppingCart.GetCart(this.HttpContext);
+            var cart = GetCart(this.HttpContext);
 
             var viewModel = new ShoppingCartViewModel
             {
-                CartItems = cart.GetCartItems(),
-                CartTotal = cart.GetTotal()
+                CartItems = GetCartItems(),
+                CartTotal = GetTotal()
             };
 
             return View(viewModel);
         }
 
+        [HttpGet]
         public ActionResult AddToCart(int id)
-        {
+        {         
+            var cart = GetCart(this.HttpContext);
+
             var addedProduct = _context.Products.Single(product => product.Id == id);
+   
+            var cartItem = _context.Carts.SingleOrDefault(c => c.CartId == cart.ShoppingCartId && c.ProductId == addedProduct.Id);
 
-            var cart = ShoppingCart.GetCart(this.HttpContext);
+            if (cartItem == null)
+            {
+                cartItem = new Cart
+                {
+                    ProductId = addedProduct.Id,
+                    CartId = cart.ShoppingCartId,
+                    Count = 1,
+                    DateCreated = DateTime.Now
+                };
+                
+                _context.Carts.Add(cartItem);
+            }
+            else
+            {
+                cartItem.Count++;
+            }
 
-            cart.AddToCart(addedProduct);
+
+            _context.SaveChanges();
 
             return RedirectToAction("Index");
         }
 
+        //[HttpPost]
+        //public void AddToCart(Product product)
+        //{
+        //    var Cart = GetCart();
+        //    var cartItem = _context.Carts.SingleOrDefault(c => c.CartId == Cart.ShoppingCartId && c.ProductId == product.Id);
+
+        //    if (cartItem == null)
+        //    {
+        //        cartItem = new Cart
+        //        {
+        //            ProductId = product.Id,
+        //            CartId = Cart.ShoppingCartId,
+        //            Count = 1,
+        //            DateCreated = DateTime.Now
+        //        };
+        //        _context.Carts.Add(cartItem);
+        //    }
+        //    else
+        //    {
+        //        cartItem.Count++;
+        //    }
+
+        //    _context.SaveChanges();
+        //}
+
         [HttpPost]
         public ActionResult RemoveFromCart(int id)
         {
-            var cart = ShoppingCart.GetCart(this.HttpContext);
+            var cart = GetCart(this.HttpContext);
 
             string productName = _context.Carts.FirstOrDefault(item => item.ProductId == id).Product.Name;
 
-            int itemCount = cart.RemoveFromCart(id);
+            int itemCount = RemoveFromCartMethod(id);
 
             var results = new ShoppingCartRemoveViewModel
             {
-                CartTotal = cart.GetTotal(),
-                CartCount = cart.GetCount(),
+                CartTotal = GetTotal(),
+                CartCount = GetCount(),
                 ItemCount = itemCount,
                 DeleteId = id
             };
@@ -64,5 +111,137 @@ namespace LetsTryMVC.Controllers
             return Json(results);
         }
 
-     }
+        public int RemoveFromCartMethod(int id)
+        {
+            var Cart = GetCart();
+            var cartItem = _context.Carts.SingleOrDefault(cart => cart.CartId == Cart.ShoppingCartId && cart.ProductId == id);
+
+            int itemCount = 0;
+
+            if (cartItem != null)
+            {
+                if (cartItem.Count > 1)
+                {
+                    cartItem.Count--;
+                    itemCount = cartItem.Count;
+                }
+                else
+                {
+                    _context.Carts.Remove(cartItem);
+                }
+
+                _context.SaveChanges();
+            }
+            return itemCount;
+        }
+
+        public void EmptyCart()
+        {
+            var Cart = GetCart();
+            var cartItems = _context.Carts.Where(cart => cart.CartId == Cart.ShoppingCartId);
+
+            foreach (var cartItem in cartItems)
+            {
+                _context.Carts.Remove(cartItem);
+            }
+            _context.SaveChanges();
+        }
+
+
+        public  ShoppingCart GetCart(HttpContext context)
+        {
+            var cart = new ShoppingCart();
+
+            cart.ShoppingCartId = GetCartId(context);
+
+            return cart;
+        }
+
+        public ShoppingCart GetCart()
+        {
+            return GetCart(this.HttpContext);
+        }
+
+
+        public List<Cart> GetCartItems()
+        {
+            var Cart = GetCart();
+            return _context.Carts.Where(cart => cart.CartId == Cart.ShoppingCartId).ToList();
+        }
+
+        public int GetCount()
+        {
+            var Cart = GetCart();
+            int? count =
+                (from cartItems in _context.Carts where cartItems.CartId == Cart.ShoppingCartId select (int?)cartItems.Count).Sum();
+
+            return count ?? 0;
+        }
+
+        public decimal GetTotal()
+        {
+            var Cart = GetCart();
+            decimal? total = (from cartItems in _context.Carts
+                              where cartItems.CartId == Cart.ShoppingCartId
+                              select (int?)cartItems.Count * cartItems.Product.Price).Sum();
+
+            return total ?? decimal.Zero;
+        }
+
+        public int CreateOrder(CustomerOrder customerOrder)
+        {
+            decimal orderTotal = 0;
+
+            var cartItems = GetCartItems();
+
+            foreach (var item in cartItems)
+            {
+                var orderedProduct = new OrderedProduct
+                {
+                    ProductId = item.ProductId,
+                    CustomerOrderId = customerOrder.Id,
+                    Quantity = item.Count
+                };
+
+                orderTotal += (item.Count * item.Product.Price);
+
+                _context.OrderedProducts.Add(orderedProduct);
+            }
+
+            customerOrder.Amount = orderTotal;
+
+            _context.SaveChanges();
+
+            EmptyCart();
+
+            return customerOrder.Id;
+        }
+
+        public string GetCartId(HttpContext context)
+        {
+            if (context.Session.GetString("CartSessionKey") == null)
+            {
+                if (!string.IsNullOrWhiteSpace(context.User.Identity.Name))
+                {
+                    context.Session.SetString("CartSessionKey", context.User.Identity.Name);
+                }
+
+                else
+                {
+                    Guid tempCartId = Guid.NewGuid();
+                    context.Session.SetString("CartSessionKey", tempCartId.ToString());
+                }
+            }
+
+            return context.Session.GetString("CartSessionKey");
+        }
+
+        public ActionResult CartSummary()
+        {
+            var cart = GetCart(this.HttpContext);
+
+            ViewData["CartCount"] = GetCount();
+            return PartialView("CartSummary");
+        }
+    }
 }

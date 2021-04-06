@@ -24,7 +24,7 @@
             <td>@product.Description</td>
             <td>@product.Price</td>
             <td>@product.Category.Name</td>
-            @*<td>@Html.ActionLink("Add To Cart", "Buy", "Cart", new { id = product.Id })</td>*@
+            <td>@Html.ActionLink("Add To Cart", "AddToCart", "ShoppingCart", new { id = product.Id })</td>
          </tr>
 
     }

@@ -36,25 +36,25 @@ else
         </tr>
         @foreach (var item in Model.CartItems)
         {
-            <tr id="row-@item.ProductId">
-                <td>
-                    @Html.ActionLink(item.Product.Name, "Details", "Products", new { id = item.ProductId }, null)
-                </td>
-                <td>
-                    @item.Product.Price
-                </td>
-                <td id="item-count-@item.ProductId">
-                    @item.Count
-                </td>
-                <td>
-                    @((item.Product.Price*item.Count).ToString("c",us))
-                </td>
-                <td>
-                    <a href="" class="RemoveLink" data-id="@item.ProductId">
-                        Remove from cart
-                    </a>
-                </td>
-            </tr>
+        <tr id="row-@item.ProductId">
+        <td>
+            @item.Product.Name
+        </td>
+        <td>
+            @item.Product.Price
+        </td>
+        <td id="item-count-@item.ProductId">
+            @item.Count
+        </td>
+        <td>
+            @((item.Product.Price*item.Count).ToString("c",us))
+        </td>
+        <td>
+            <a href="" class="RemoveLink" data-id="@item.ProductId">
+                Remove from cart
+            </a>
+        </td>
+    </tr>
         }
         <tr>
             <td>
