@@ -149,7 +149,10 @@ namespace LetsTryMVC.Controllers
         {
             var getCart = GetCart();
             string shoppingCartId = cart.ShoppingCartId;
-            return _context.Carts.Where(cart => cart.CartId == shoppingCartId).ToList();
+            var returnCart = _context.Carts.Where(cart => cart.CartId == shoppingCartId);
+  
+            return returnCart.Include(x => x.Product).ToList();          
+                
         }
 
         public int GetCount()
