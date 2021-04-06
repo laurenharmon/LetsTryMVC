@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LetsTryMVC.Migrations
 {
-    public partial class Another : Migration
+    public partial class TryAgain : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

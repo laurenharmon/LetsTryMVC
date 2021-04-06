@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LetsTryMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210405210844_Another")]
-    partial class Another
+    [Migration("20210406192005_TryAgain")]
+    partial class TryAgain
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -20,53 +20,55 @@
 }
 else
 {
-    <table class="table-responsive table-bordered table-striped">
-        <tr>
-            <th>
-                Product Name
-            </th>
-            <th>
-                Price (each)
-            </th>
-            <th>
-                Quantity
-            </th>
-            <th>Sub-total</th>
-            <th></th>
-        </tr>
-        @foreach (var item in Model.CartItems)
-        {
+<table class="table-responsive table-bordered table-striped">
+    <tr>
+        <th>
+            Product Name
+        </th>
+        <th>
+            Price (each)
+        </th>
+        <th>
+            Quantity
+        </th>
+        <th>Sub-total</th>
+        <th></th>
+    </tr>
+    @foreach (Cart item in Model.CartItems)
+    {
         <tr id="row-@item.ProductId">
+            <td>
+                @item.Product.Name
+            </td>
+            <td>
+                @item.Product.Price
+            </td>
+            <td id="item-count-@item.ProductId">
+                @item.Count
+            </td>
+            <td>
+                @((item.Product.Price*item.Count).ToString("c",us))
+            </td>
+            <td>
+                <a href="" class="RemoveLink" data-id="@item.ProductId">
+                    Remove from cart
+                </a>
+            </td>
+        </tr>
+    }
+
+    <tr>
         <td>
-            @item.Product.Name
+
+            Total
         </td>
-        <td>
-            @item.Product.Price
-        </td>
-        <td id="item-count-@item.ProductId">
-            @item.Count
-        </td>
-        <td>
-            @((item.Product.Price*item.Count).ToString("c",us))
-        </td>
-        <td>
-            <a href="" class="RemoveLink" data-id="@item.ProductId">
-                Remove from cart
-            </a>
+        <td></td>
+        <td></td>
+        <td id="cart-total" class="text-success">
+            <b>@Model.CartTotal.ToString("C", us)</b>
         </td>
     </tr>
-        }
-        <tr>
-            <td>
-                Total
-            </td>
-            <td></td>
-            <td></td>
-            <td id="cart-total" class="text-success">
-                <b>@Model.CartTotal.ToString("C", us)</b>
-            </td>
-        </tr>
-    </table>
+</table>
 
     <p class="button">
         <a href="~/StoreFront/Index/1">Continue shopping>></a>

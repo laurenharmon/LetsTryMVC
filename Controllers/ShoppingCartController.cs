@@ -3,6 +3,7 @@ using LetsTryMVC.Models;
 using LetsTryMVC.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,36 +24,45 @@ namespace LetsTryMVC.Controllers
 
         public ActionResult Index()
         {
-            var cart = GetCart(this.HttpContext);
+            ShoppingCart cart = GetCart(this.HttpContext);
 
-            var viewModel = new ShoppingCartViewModel
+            ShoppingCartViewModel viewModel = new ShoppingCartViewModel
             {
-                CartItems = GetCartItems(),
+                CartItems = GetCartItems(cart),
                 CartTotal = GetTotal()
             };
 
             return View(viewModel);
+
         }
 
-        [HttpGet]
-        public ActionResult AddToCart(int id)
-        {         
+
+        [HttpPost]
+        public IActionResult AddToCart(int id)
+        {
+            var addedProduct = _context.Products.Single(product => product.Id == id);
+
             var cart = GetCart(this.HttpContext);
 
-            var addedProduct = _context.Products.Single(product => product.Id == id);
-   
-            var cartItem = _context.Carts.SingleOrDefault(c => c.CartId == cart.ShoppingCartId && c.ProductId == addedProduct.Id);
+            AddToCart(addedProduct);
+
+            return RedirectToAction("Index");
+        }
+
+        public void AddToCart(Product product)
+        {
+            var Cart = GetCart(this.HttpContext);
+            var cartItem = _context.Carts.SingleOrDefault(c => c.CartId == Cart.ShoppingCartId && c.ProductId == product.Id);
 
             if (cartItem == null)
             {
                 cartItem = new Cart
                 {
-                    ProductId = addedProduct.Id,
-                    CartId = cart.ShoppingCartId,
+                    ProductId = product.Id,
+                    CartId = Cart.ShoppingCartId,
                     Count = 1,
                     DateCreated = DateTime.Now
                 };
-                
                 _context.Carts.Add(cartItem);
             }
             else
@@ -60,36 +70,8 @@ namespace LetsTryMVC.Controllers
                 cartItem.Count++;
             }
 
-
             _context.SaveChanges();
-
-            return RedirectToAction("Index");
         }
-
-        //[HttpPost]
-        //public void AddToCart(Product product)
-        //{
-        //    var Cart = GetCart();
-        //    var cartItem = _context.Carts.SingleOrDefault(c => c.CartId == Cart.ShoppingCartId && c.ProductId == product.Id);
-
-        //    if (cartItem == null)
-        //    {
-        //        cartItem = new Cart
-        //        {
-        //            ProductId = product.Id,
-        //            CartId = Cart.ShoppingCartId,
-        //            Count = 1,
-        //            DateCreated = DateTime.Now
-        //        };
-        //        _context.Carts.Add(cartItem);
-        //    }
-        //    else
-        //    {
-        //        cartItem.Count++;
-        //    }
-
-        //    _context.SaveChanges();
-        //}
 
         [HttpPost]
         public ActionResult RemoveFromCart(int id)
@@ -113,7 +95,7 @@ namespace LetsTryMVC.Controllers
 
         public int RemoveFromCartMethod(int id)
         {
-            var Cart = GetCart();
+            var Cart = GetCart(this.HttpContext);
             var cartItem = _context.Carts.SingleOrDefault(cart => cart.CartId == Cart.ShoppingCartId && cart.ProductId == id);
 
             int itemCount = 0;
@@ -135,17 +117,17 @@ namespace LetsTryMVC.Controllers
             return itemCount;
         }
 
-        public void EmptyCart()
-        {
-            var Cart = GetCart();
-            var cartItems = _context.Carts.Where(cart => cart.CartId == Cart.ShoppingCartId);
+        //public void EmptyCart()
+        //{
+        //    var Cart = GetCart();
+        //    var cartItems = _context.Carts.Where(cart => cart.CartId == Cart.ShoppingCartId);
 
-            foreach (var cartItem in cartItems)
-            {
-                _context.Carts.Remove(cartItem);
-            }
-            _context.SaveChanges();
-        }
+        //    foreach (var cartItem in cartItems)
+        //    {
+        //        _context.Carts.Remove(cartItem);
+        //    }
+        //    _context.SaveChanges();
+        //}
 
 
         public  ShoppingCart GetCart(HttpContext context)
@@ -163,15 +145,16 @@ namespace LetsTryMVC.Controllers
         }
 
 
-        public List<Cart> GetCartItems()
+        public List<Cart> GetCartItems(ShoppingCart cart)
         {
-            var Cart = GetCart();
-            return _context.Carts.Where(cart => cart.CartId == Cart.ShoppingCartId).ToList();
+            var getCart = GetCart();
+            string shoppingCartId = cart.ShoppingCartId;
+            return _context.Carts.Where(cart => cart.CartId == shoppingCartId).ToList();
         }
 
         public int GetCount()
         {
-            var Cart = GetCart();
+            var Cart = GetCart(this.HttpContext);
             int? count =
                 (from cartItems in _context.Carts where cartItems.CartId == Cart.ShoppingCartId select (int?)cartItems.Count).Sum();
 
@@ -188,34 +171,34 @@ namespace LetsTryMVC.Controllers
             return total ?? decimal.Zero;
         }
 
-        public int CreateOrder(CustomerOrder customerOrder)
-        {
-            decimal orderTotal = 0;
+        //public int CreateOrder(CustomerOrder customerOrder)
+        //{
+        //    decimal orderTotal = 0;
 
-            var cartItems = GetCartItems();
+        //    var cartItems = GetCartItems();
 
-            foreach (var item in cartItems)
-            {
-                var orderedProduct = new OrderedProduct
-                {
-                    ProductId = item.ProductId,
-                    CustomerOrderId = customerOrder.Id,
-                    Quantity = item.Count
-                };
+        //    foreach (var item in cartItems)
+        //    {
+        //        var orderedProduct = new OrderedProduct
+        //        {
+        //            ProductId = item.ProductId,
+        //            CustomerOrderId = customerOrder.Id,
+        //            Quantity = item.Count
+        //        };
 
-                orderTotal += (item.Count * item.Product.Price);
+        //        orderTotal += (item.Count * item.Product.Price);
 
-                _context.OrderedProducts.Add(orderedProduct);
-            }
+        //        _context.OrderedProducts.Add(orderedProduct);
+        //    }
 
-            customerOrder.Amount = orderTotal;
+        //    customerOrder.Amount = orderTotal;
 
-            _context.SaveChanges();
+        //    _context.SaveChanges();
 
-            EmptyCart();
+        //    EmptyCart();
 
-            return customerOrder.Id;
-        }
+        //    return customerOrder.Id;
+        //}
 
         public string GetCartId(HttpContext context)
         {
