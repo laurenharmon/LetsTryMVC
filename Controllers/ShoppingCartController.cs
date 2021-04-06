@@ -36,20 +36,7 @@ namespace LetsTryMVC.Controllers
 
         }
 
-
-        [HttpPost]
-        public IActionResult AddToCart(int id)
-        {
-            var addedProduct = _context.Products.Single(product => product.Id == id);
-
-            var cart = GetCart(this.HttpContext);
-
-            AddToCart(addedProduct);
-
-            return RedirectToAction("Index");
-        }
-
-        public void AddToCart(Product product)
+        public IActionResult AddToCart(Product product)
         {
             var Cart = GetCart(this.HttpContext);
             var cartItem = _context.Carts.SingleOrDefault(c => c.CartId == Cart.ShoppingCartId && c.ProductId == product.Id);
@@ -71,29 +58,11 @@ namespace LetsTryMVC.Controllers
             }
 
             _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public ActionResult RemoveFromCart(int id)
-        {
-            var cart = GetCart(this.HttpContext);
 
-            string productName = _context.Carts.FirstOrDefault(item => item.ProductId == id).Product.Name;
-
-            int itemCount = RemoveFromCartMethod(id);
-
-            var results = new ShoppingCartRemoveViewModel
-            {
-                CartTotal = GetTotal(),
-                CartCount = GetCount(),
-                ItemCount = itemCount,
-                DeleteId = id
-            };
-
-            return Json(results);
-        }
-
-        public int RemoveFromCartMethod(int id)
+        public IActionResult RemoveFromCart(int id)
         {
             var Cart = GetCart(this.HttpContext);
             var cartItem = _context.Carts.SingleOrDefault(cart => cart.CartId == Cart.ShoppingCartId && cart.ProductId == id);
@@ -114,7 +83,7 @@ namespace LetsTryMVC.Controllers
 
                 _context.SaveChanges();
             }
-            return itemCount;
+            return RedirectToAction("Index");
         }
 
         //public void EmptyCart()

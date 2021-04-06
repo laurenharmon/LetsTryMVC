@@ -50,9 +50,8 @@ else
                 @((item.Product.Price*item.Count).ToString("c",us))
             </td>
             <td>
-                <a href="" class="RemoveLink" data-id="@item.ProductId">
-                    Remove from cart
-                </a>
+                @Html.ActionLink("Remove From Cart", "RemoveFromCart", "ShoppingCart", new { id = item.ProductId }, new { @class = "btn btn-info" })
+                Remove from cart
             </td>
         </tr>
     }
@@ -71,7 +70,7 @@ else
 </table>
 
     <p class="button">
-        <a href="~/StoreFront/Index/1">Continue shopping>></a>
+        <a href="~/Products/Index">Continue shopping>></a>
     </p>
     <p class="button">
         @Html.ActionLink("Checkout>> ", "AddressAndPayment", "Checkout")
