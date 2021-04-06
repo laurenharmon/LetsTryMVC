@@ -39,7 +39,8 @@ namespace LetsTryMVC.Models
         [ScaffoldColumn(false)]
         public Decimal Amount { get; set; }
 
-        public CustomerOrder(string firstName, string lastName, string address, string city, string state, string postalCode, string country, string phone, string email, DateTime dateCreated, decimal amount)
+        public CustomerOrder(string firstName, string lastName, string address, string city, string state, string postalCode, string country, 
+            string phone, string email, DateTime dateCreated)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -51,7 +52,8 @@ namespace LetsTryMVC.Models
             Phone = phone;
             Email = email;
             DateCreated = dateCreated;
-            Amount = amount;
         }
+
+        public CustomerOrder() { }
     }
 }

@@ -40,6 +40,7 @@ namespace LetsTryMVC.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 CustomerOrder newOrder = new CustomerOrder
                 {
                     FirstName = orderViewModel.FirstName,
