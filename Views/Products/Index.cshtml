@@ -13,8 +13,6 @@
         <th scope="col">Price</th>
         <th scope="col">Category</th>
         <th scope="col">Add Item To Cart</th>
-        @*<th scope="col">Edit</th>
-            <th scope="col">Delete</th>*@
 
     </tr>
     @foreach (var product in Model)
@@ -22,7 +20,7 @@
         <tr>
             <td>@product.Name</td>
             <td>@product.Description</td>
-            <td>@product.Price</td>
+            <td>@product.Price.ToString("c")</td>
             <td>@product.Category.Name</td>
             <td>@Html.ActionLink("Add to cart", "AddToCart", "ShoppingCart", new { id = product.Id }, new { @class = "btn btn-info" })</td>
          </tr>
