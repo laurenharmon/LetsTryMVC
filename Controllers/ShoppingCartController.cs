@@ -148,8 +148,6 @@ namespace LetsTryMVC.Controllers
 
         public IActionResult CreateOrder(CustomerOrder customerOrder)
         {
- 
-
             return RedirectToAction("Complete", "Checkout", new { id = customerOrder.Id });
         }
 

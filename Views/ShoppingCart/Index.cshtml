@@ -9,7 +9,7 @@
 
 
 <h3 class="text-center">
-    <span>Your shopping cart:</span>
+    <span>Your Cart:</span>
 </h3>
 
 <div id="update-message" class="text-info">
@@ -20,59 +20,62 @@
 }
 else
 {
-    <div class="container">
-        <div class="row">
-            <div class="col-sm align-items-center">
-                <strong>Product</strong>
-            </div>
-            <div class="col-sm align-items-center">
-                <strong>Price</strong>
-            </div>
-            <div class="col-sm align-items-center">
-                <strong>Quantity</strong>
-            </div>
-            <div class="col-sm align-items-center">
-                <strong>Product Total</strong>
-            </div>
-            <div class="col-sm">
-              
-            </div>
-        </div>
-        @foreach (Cart item in Model.CartItems)
-        {
-    <div class="container">
-        <div class="row">
-            <div class="col-sm">
+<table class="table">
+    <tr>
+
+        <th scope="col">
+            Product
+        </th>
+        <th scope="col">
+            Price
+        </th>
+        <th scope="col">
+            Quantity
+        </th>
+        <th scope="col">
+            Product Total
+        </th>
+        <th scope="col">
+            @*BLANK INTENTIONALLY*@
+        </th>
+    </tr>
+
+    @foreach (Cart item in Model.CartItems)
+    {
+        <tr>
+            <td scope="col">
                 @item.Product.Name
-            </div>
-            <div class="col-sm">
+            </td>
+            <td scope="col">
                 @item.Product.Price.ToString("c", us)
-            </div>
-            <div class="col-sm" id="item-count-@item.ProductId">
+            </td>
+            <td scope="col" id="item-count-@item.ProductId">
                 @item.Count
-            </div>
-            <div class="col-sm">
+            </td>
+            <td scope="col">
                 @((item.Product.Price*item.Count).ToString("c",us))
-            </div>
-            <div class="col-sm">
-                @Html.ActionLink("Remove From Cart", "RemoveFromCart", "ShoppingCart", new { id = item.ProductId }, new { @class = "btn btn-info" })
-            </div>
-        </div>
+            </td>
+            <td scope="col">
+                @Html.ActionLink("Remove From Cart", "RemoveFromCart", "ShoppingCart", new { id = item.ProductId }, new { @class = "btn btn-outline-danger btn-sm" })
+            </td>
+        </tr>
+    }
+<tr>
+    <th scope="col"><strong>Total: </strong></th>
+    <td scope="col"></td>
+    <td scope="col"></td>
+    <th id="cart-total" class="text-success" scope="col">@Model.CartTotal.ToString("C", us)</th>
+    <td scope="col"></td>
+</tr>
+</table>
+<div class="container">
+    <div>
+        @Html.ActionLink("Checkout ", "AddressAndPayment", "Checkout", new { amount = Model.CartTotal }, new { @class = "btn btn-success btn-lg btn-block" })
     </div>
-    <br />
-        }
+    <div>
+        <a href="~/Products/Index">Continue shopping>></a>
     </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-md-8"><strong>Total: </strong></div>
-            <div id="cart-total" class="col-6 col-md-4 text-success">@Model.CartTotal.ToString("C", us)</div>
-        </div>
-        <p class="button">
-            <a href="~/Products/Index">Continue shopping>></a>
-        </p>
-        <p class="button">
-            @Html.ActionLink("Checkout ", "AddressAndPayment", "Checkout", new { amount = Model.CartTotal })
-        </p>
-    </div>
+
+</div>
 }
 

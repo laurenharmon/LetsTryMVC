@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using LetsTryMVC.Models;
+
 
 namespace LetsTryMVC.ViewModels
 {
