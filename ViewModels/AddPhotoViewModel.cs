@@ -12,13 +12,13 @@ namespace LetsTryMVC.ViewModels
     public class AddPhotoViewModel
     {
         public string UserName { get; set; }
-        public string Title { get; set; }
-
-        [Required(ErrorMessage = "Name is required.")]
+        [Required(ErrorMessage = "Title is required.")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Name must be between 3 and 50 characters.")]
+        public string Title { get; set; }
         public string ImageName { get; set; }
         public IFormFile ImageFile { get; set; }
 
+        [Required(ErrorMessage ="You must choose a category")]
         public int CategoryId { get; set; }
 
         public List<SelectListItem> Categories { get; set; }

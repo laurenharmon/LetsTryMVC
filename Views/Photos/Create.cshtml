@@ -1,4 +1,4 @@
-﻿@model LetsTryMVC.Models.Photo
+﻿@model LetsTryMVC.ViewModels.AddPhotoViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -22,12 +22,12 @@
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageFile" class="control-label"></label>
+                <label asp-for="ImageFile" class="control-label">Please Select A Photo: </label>
                 <input asp-for="ImageFile" accept="image/*" />
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
+                <label asp-for="CategoryId" class="control-label">Category: </label>
                 <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories"></select>
             </div>
             <div class="form-group">

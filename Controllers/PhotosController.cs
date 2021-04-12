@@ -9,9 +9,11 @@ using LetsTryMVC.Data;
 using LetsTryMVC.Models;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LetsTryMVC.Controllers
 {
+    [Authorize]
     public class PhotosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -31,25 +33,6 @@ namespace LetsTryMVC.Controllers
                 .Include(p => p.Category);
    
             return View(await findUserPhotos.ToListAsync());
-        }
-
-        // GET: Photos/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var photo = await _context.Photos
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (photo == null)
-            {
-                return NotFound();
-            }
-
-            return View(photo);
         }
 
         // GET: Photos/Create
