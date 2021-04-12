@@ -18,5 +18,7 @@ namespace LetsTryMVC.Models
         public ProductCategory Category { get; set; }
         public int CategoryId { get; set; }
 
+        public string UserName { get; set; }
+
     }
 }

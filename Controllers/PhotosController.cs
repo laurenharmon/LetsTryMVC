@@ -26,8 +26,11 @@ namespace LetsTryMVC.Controllers
         // GET: Photos
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Photos.Include(p => p.Category);
-            return View(await applicationDbContext.ToListAsync());
+            var findUserPhotos = _context.Photos
+                .Where(p => p.UserName == User.Identity.Name)
+                .Include(p => p.Category);
+   
+            return View(await findUserPhotos.ToListAsync());
         }
 
         // GET: Photos/Details/5
@@ -58,7 +61,7 @@ namespace LetsTryMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ImageFile,CategoryId")] Photo photo)
+        public async Task<IActionResult> Create([Bind("Id,Title,ImageFile,CategoryId,UserName")] Photo photo)
         {
             ProductCategory category = _context.Categories.Find(photo.CategoryId);
             if (ModelState.IsValid)
@@ -73,7 +76,6 @@ namespace LetsTryMVC.Controllers
                     await photo.ImageFile.CopyToAsync(fileStream);
                 }
                 photo.Category = category;
-
                 //Insert record
                 _context.Add(photo);
                 await _context.SaveChangesAsync();

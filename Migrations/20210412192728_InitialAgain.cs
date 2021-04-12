@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LetsTryMVC.Migrations
 {
-    public partial class TryAgain : Migration
+    public partial class InitialAgain : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -66,18 +66,17 @@ namespace LetsTryMVC.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    FirstName = table.Column<string>(maxLength: 160, nullable: false),
-                    LastName = table.Column<string>(maxLength: 160, nullable: false),
-                    Address = table.Column<string>(maxLength: 70, nullable: false),
-                    City = table.Column<string>(maxLength: 40, nullable: false),
-                    State = table.Column<string>(maxLength: 40, nullable: false),
-                    PostalCode = table.Column<string>(maxLength: 10, nullable: false),
-                    Country = table.Column<string>(maxLength: 40, nullable: false),
-                    Phone = table.Column<string>(maxLength: 24, nullable: false),
-                    Email = table.Column<string>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    State = table.Column<string>(nullable: true),
+                    PostalCode = table.Column<string>(nullable: true),
+                    Country = table.Column<string>(nullable: true),
+                    Phone = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
                     DateCreated = table.Column<DateTime>(nullable: false),
-                    Amount = table.Column<decimal>(nullable: false),
-                    CustomerUserName = table.Column<string>(nullable: true)
+                    Amount = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -198,7 +197,8 @@ namespace LetsTryMVC.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Title = table.Column<string>(nullable: true),
                     ImageName = table.Column<string>(nullable: true),
-                    CategoryId = table.Column<int>(nullable: false)
+                    CategoryId = table.Column<int>(nullable: false),
+                    UserName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -256,33 +256,6 @@ namespace LetsTryMVC.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "OrderedProducts",
-                columns: table => new
-                {
-                    ProductId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    CustomerOrderId = table.Column<int>(nullable: false),
-                    Quantity = table.Column<int>(nullable: false),
-                    ProductId1 = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrderedProducts", x => x.ProductId);
-                    table.ForeignKey(
-                        name: "FK_OrderedProducts_CustomerOrders_CustomerOrderId",
-                        column: x => x.CustomerOrderId,
-                        principalTable: "CustomerOrders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OrderedProducts_Products_ProductId1",
-                        column: x => x.ProductId1,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -326,16 +299,6 @@ namespace LetsTryMVC.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderedProducts_CustomerOrderId",
-                table: "OrderedProducts",
-                column: "CustomerOrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderedProducts_ProductId1",
-                table: "OrderedProducts",
-                column: "ProductId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Photos_CategoryId",
                 table: "Photos",
                 column: "CategoryId");
@@ -367,7 +330,7 @@ namespace LetsTryMVC.Migrations
                 name: "Carts");
 
             migrationBuilder.DropTable(
-                name: "OrderedProducts");
+                name: "CustomerOrders");
 
             migrationBuilder.DropTable(
                 name: "Photos");
@@ -377,9 +340,6 @@ namespace LetsTryMVC.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "CustomerOrders");
 
             migrationBuilder.DropTable(
                 name: "Products");

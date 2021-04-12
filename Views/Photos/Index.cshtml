@@ -1,10 +1,12 @@
 ﻿@model IEnumerable<LetsTryMVC.Models.Photo>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Photos";
 }
 
-<h1>Index</h1>
+<h2 class="text-center">
+    <span>Photos:</span>
+</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -34,7 +36,7 @@
                 <img src="@("~/image/"+item.ImageName)" asp-append-version="true" width="250" height="250" />
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Category.Id)
+                @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>

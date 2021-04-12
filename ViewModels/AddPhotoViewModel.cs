@@ -11,6 +11,7 @@ namespace LetsTryMVC.ViewModels
 {
     public class AddPhotoViewModel
     {
+        public string UserName { get; set; }
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Name is required.")]
