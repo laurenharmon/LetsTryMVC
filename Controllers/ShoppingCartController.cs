@@ -25,7 +25,7 @@ namespace LetsTryMVC.Controllers
 
         public ActionResult Index()
         {
-            ShoppingCart cart = GetCart(this.HttpContext);
+            ShoppingCart cart = GetCart();
 
             ShoppingCartViewModel viewModel = new ShoppingCartViewModel
             {
@@ -39,7 +39,7 @@ namespace LetsTryMVC.Controllers
 
         public IActionResult AddToCart(Product product)
         {
-            var Cart = GetCart(this.HttpContext);
+            var Cart = GetCart();
             var cartItem = _context.Carts.SingleOrDefault(c => c.CartId == Cart.ShoppingCartId && c.ProductId == product.Id);
 
             if (cartItem == null)
@@ -65,7 +65,7 @@ namespace LetsTryMVC.Controllers
 
         public IActionResult RemoveFromCart(int id)
         {
-            var Cart = GetCart(this.HttpContext);
+            var Cart = GetCart();
             var cartItem = _context.Carts.SingleOrDefault(cart => cart.CartId == Cart.ShoppingCartId && cart.ProductId == id);
 
             int itemCount = 0;
@@ -117,11 +117,10 @@ namespace LetsTryMVC.Controllers
         }
 
 
-        public List<Cart> GetCartItems(ShoppingCart cart)
+        public List<Cart> GetCartItems(ShoppingCart Cart)
         {
-            var getCart = GetCart();
-            string shoppingCartId = cart.ShoppingCartId;
-            var returnCart = _context.Carts.Where(cart => cart.CartId == shoppingCartId);
+            //string shoppingCartId = getCart.ShoppingCartId;
+            var returnCart = _context.Carts.Where(cart => cart.CartId == Cart.ShoppingCartId);
   
             return returnCart.Include(x => x.Product).ToList();          
                 
@@ -129,7 +128,7 @@ namespace LetsTryMVC.Controllers
 
         public int GetCount()
         {
-            var Cart = GetCart(this.HttpContext);
+            var Cart = GetCart();
             int? count =
                 (from cartItems in _context.Carts where cartItems.CartId == Cart.ShoppingCartId select (int?)cartItems.Count).Sum();
 
@@ -170,12 +169,11 @@ namespace LetsTryMVC.Controllers
             return context.Session.GetString("CartSessionKey");
         }
 
-        public ActionResult CartSummary()
+        public IActionResult CartSummary()
         {
-            var cart = GetCart(this.HttpContext);
-
-            ViewData["CartCount"] = GetCount();
-            return PartialView("CartSummary");
+            ViewData["CartSummary"] = GetCount();
+            return PartialView("_CartSummaryPartial");
         }
+
     }
 }

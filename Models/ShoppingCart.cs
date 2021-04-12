@@ -13,7 +13,7 @@ namespace LetsTryMVC.Models
     {
         public string ShoppingCartId { get; set; }
 
-        public const string CartSessionKey = "cartId";
+        public static string CartSessionKey = "cartId";
 
 
     }

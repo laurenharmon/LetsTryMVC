@@ -16,7 +16,7 @@
 </div>
 @if (Model.CartItems.Count == 0)
 {
-    <a class="btn-danger" href="~/StoreFront/Index/1">Your shopping cart is empty, continue shopping!</a>
+    <a class="btn btn-link btn-lg" href="~/Products/Index">Your shopping cart is empty, continue shopping!</a>
 }
 else
 {
@@ -56,6 +56,7 @@ else
                 @((item.Product.Price*item.Count).ToString("c",us))
             </td>
             <td scope="col">
+                @Html.ActionLink("Add Another To Cart", "AddToCart", "ShoppingCart", new { id = item.ProductId }, new { @class = "btn btn-success btn-sm" })
                 @Html.ActionLink("Remove From Cart", "RemoveFromCart", "ShoppingCart", new { id = item.ProductId }, new { @class = "btn btn-outline-danger btn-sm" })
             </td>
         </tr>
