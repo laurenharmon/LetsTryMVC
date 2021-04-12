@@ -23,6 +23,8 @@ namespace LetsTryMVC.Data
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CustomerOrder> CustomerOrders { get; set; }
 
+        public DbSet<FriendsList> FriendsLists { get; set; }
+
 
     }
 }
