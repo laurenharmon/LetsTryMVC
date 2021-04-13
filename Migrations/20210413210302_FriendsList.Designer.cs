@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LetsTryMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210413003433_!")]
-    partial class _
+    [Migration("20210413210302_FriendsList")]
+    partial class FriendsList
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -88,36 +88,25 @@ namespace LetsTryMVC.Migrations
                     b.ToTable("CustomerOrders");
                 });
 
-            modelBuilder.Entity("LetsTryMVC.Models.Friend", b =>
+            modelBuilder.Entity("LetsTryMVC.Models.Friends", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.Property<int?>("FriendsListId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("UserId");
-
-                    b.HasIndex("FriendsListId");
-
-                    b.ToTable("Friends");
-                });
-
-            modelBuilder.Entity("LetsTryMVC.Models.FriendsList", b =>
-                {
-                    b.Property<int>("Id")
+                    b.Property<int>("RelationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Reference")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                    b.Property<int>("FriendId")
+                        .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.ToTable("FriendsLists");
+                    b.HasKey("RelationId");
+
+                    b.HasIndex("FriendId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Friends");
                 });
 
             modelBuilder.Entity("LetsTryMVC.Models.Photo", b =>
@@ -185,6 +174,20 @@ namespace LetsTryMVC.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("LetsTryMVC.Models.UserProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Profiles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -392,11 +395,19 @@ namespace LetsTryMVC.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LetsTryMVC.Models.Friend", b =>
+            modelBuilder.Entity("LetsTryMVC.Models.Friends", b =>
                 {
-                    b.HasOne("LetsTryMVC.Models.FriendsList", null)
-                        .WithMany("Friends")
-                        .HasForeignKey("FriendsListId");
+                    b.HasOne("LetsTryMVC.Models.UserProfile", "Friend")
+                        .WithMany()
+                        .HasForeignKey("FriendId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LetsTryMVC.Models.UserProfile", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LetsTryMVC.Models.Photo", b =>

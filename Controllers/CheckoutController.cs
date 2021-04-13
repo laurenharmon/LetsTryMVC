@@ -38,7 +38,7 @@ namespace LetsTryMVC.Controllers
         [HttpPost]
         public IActionResult AddressAndPayment(CustomerOrderViewModel orderViewModel)
         {
-            if (ModelState.IsValid)
+            if (orderViewModel != null)
             {
 
                 CustomerOrder newOrder = new CustomerOrder

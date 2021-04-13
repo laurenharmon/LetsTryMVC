@@ -48,7 +48,7 @@ namespace LetsTryMVC.Controllers
             return View(product);
         }
 
-        // GET: Products/Create
+        [HttpGet]
         public IActionResult Create()
         {
             List<ProductCategory> categories = _context.Categories.ToList();
@@ -60,7 +60,7 @@ namespace LetsTryMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(AddProductViewModel addProductViewModel)
         {
-            if (ModelState.IsValid)
+            if (addProductViewModel != null)
             {
                 ProductCategory category = _context.Categories.Find(addProductViewModel.CategoryId);
                 Product newProduct = new Product

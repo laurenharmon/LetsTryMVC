@@ -1,23 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace LetsTryMVC.Models
 {
-    public class Friend
+    public class UserProfile
     {
         [Key]
-        public string UserId { get; set; }
+        public int Id { get; set; }
         public string UserName { get; set; }
-
-        public Friend(string userId, string userName)
+        
+        public UserProfile(string userName)
         {
-            UserId = userId;
             UserName = userName;
         }
 
-        public Friend() { }
+        public UserProfile() { }
     }
+
+
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LetsTryMVC.Migrations
 {
-    public partial class _ : Migration
+    public partial class FriendsList : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -84,16 +84,16 @@ namespace LetsTryMVC.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FriendsLists",
+                name: "Profiles",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Reference = table.Column<string>(nullable: true)
+                    UserName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FriendsLists", x => x.Id);
+                    table.PrimaryKey("PK_Profiles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -251,19 +251,26 @@ namespace LetsTryMVC.Migrations
                 name: "Friends",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
-                    UserName = table.Column<string>(nullable: true),
-                    FriendsListId = table.Column<int>(nullable: true)
+                    RelationId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<int>(nullable: false),
+                    FriendId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Friends", x => x.UserId);
+                    table.PrimaryKey("PK_Friends", x => x.RelationId);
                     table.ForeignKey(
-                        name: "FK_Friends_FriendsLists_FriendsListId",
-                        column: x => x.FriendsListId,
-                        principalTable: "FriendsLists",
+                        name: "FK_Friends_Profiles_FriendId",
+                        column: x => x.FriendId,
+                        principalTable: "Profiles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Friends_Profiles_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Profiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -331,9 +338,14 @@ namespace LetsTryMVC.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friends_FriendsListId",
+                name: "IX_Friends_FriendId",
                 table: "Friends",
-                column: "FriendsListId");
+                column: "FriendId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Friends_UserId",
+                table: "Friends",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photos_CategoryId",
@@ -385,7 +397,7 @@ namespace LetsTryMVC.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "FriendsLists");
+                name: "Profiles");
 
             migrationBuilder.DropTable(
                 name: "Categories");

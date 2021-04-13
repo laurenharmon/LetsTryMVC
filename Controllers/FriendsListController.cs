@@ -3,6 +3,7 @@ using LetsTryMVC.Models;
 using LetsTryMVC.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,70 +28,69 @@ namespace LetsTryMVC.Controllers
             return View(friends);
         }
 
-        public Microsoft.AspNetCore.Identity.IdentityUser GetUser(HttpContext context)
+        public UserProfile GetUser()
         {
-            var user = _context.Users.First(p => p.UserName == User.Identity.Name);    
-            return user;
-        }
-
-        public Microsoft.AspNetCore.Identity.IdentityUser GetUser()
-        {
-            return GetUser(this.HttpContext);
-        }
-
-        [HttpGet]
-        public IActionResult AddFriend(string id)
-        {
-
-            if (id == null) {
-                return Redirect("Index");
-            }
-
-            var friend = _context.Users
-                .First(m => m.Id == id);
-
-            Friend bestie = new Friend
+            var user = _context.Users.First(p => p.UserName == User.Identity.Name);
+            var doesUserHaveProfile = _context.Profiles.FirstOrDefault(u => u.UserName == user.UserName);
+            
+            if (doesUserHaveProfile == null)
             {
-                UserId = friend.Id,
-                UserName = friend.UserName
-            };
-
-            List<Friend> newList = new List<Friend>();
-            newList.Add(bestie);
-
-            AddFriendViewModel addFriendViewModel = new AddFriendViewModel(newList);
-
-            return View(addFriendViewModel);
-        }
-
-        [HttpPost, ActionName("AddFriend")]
-        public IActionResult AddFriendConfirm(AddFriendViewModel viewModel)
-        {
-            var user = GetUser();
-            var newFriend = viewModel.Friend;
-            var list = _context.FriendsLists.FirstOrDefault(x => x.Reference == user.Id);
-            if (list == null)
-            {
-                list = new FriendsList
+                UserProfile profile = new UserProfile
                 {
-                    Reference = user.Id,
-                    Friends = viewModel.Friends 
+                    UserName = user.UserName
                 };
-                _context.FriendsLists.Add(list);
+                _context.Profiles.Add(profile);
+                _context.SaveChanges();               
+                return profile;
             } else
             {
-                list.Friends.Add(newFriend);
+                return doesUserHaveProfile;
             }
-           
 
+        }
+
+
+        public UserProfile GetFriend(string id)
+        {
+            var user = _context.Users.First(p => p.Id == id);
+            var doesFriendHaveProfile = _context.Profiles.FirstOrDefault(u => u.UserName == user.UserName);
+
+            if (doesFriendHaveProfile == default)
+            {
+                UserProfile friendProfile = new UserProfile
+                {
+                    UserName = user.UserName
+                };
+                _context.Profiles.Add(friendProfile);
+                _context.SaveChanges();
+                return friendProfile;
+            }
+            return doesFriendHaveProfile;
+        }
+
+        public IActionResult AddFriend(string id)
+        {
+            var user = GetUser();
+            var newFriend = GetFriend(id);
+
+            Friends besties = new Friends
+            {
+                UserId = user.Id,
+                FriendId = newFriend.Id
+            };
+            _context.Friends.Add(besties);
+            _context.SaveChanges();
             return RedirectToAction("MyFriends");
         }
 
         public IActionResult MyFriends()
         {
+            //var findUserPhotos = _context.Photos
+            //.Where(p => p.UserName == User.Identity.Name)
+            //.Include(p => p.Category);
             var user = GetUser();
-            var friends = _context.FriendsLists.First(x => x.Reference == user.Id);
-                
+            List<Friends> friends = _context.Friends.Where(x => x.UserId == user.Id).Include(x => x.Friend).ToList();
+            
             return View(friends);
         }
     }

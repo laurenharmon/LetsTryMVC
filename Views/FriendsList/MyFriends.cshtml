@@ -1,17 +1,8 @@
-﻿@*@using LetsTryMVC.ViewModels
-@model AddFriendViewModel
+﻿@model List<Friends>
+<h1>Your Friends:</h1>
 
-<table class="table">
-    <tr>
-        <th scope="col">Name</th>
-        <th></th>
-    </tr>
-    @foreach (var user in Model.Friends)
-    {
-        <tr>
-            <td>@user.UserName</td>
-        </tr>
-
-    }
-</table>*@
-<h1>Success</h1>
+@foreach(var friend in Model)
+            {
+                @friend.Friend.UserName
+            }
+            
