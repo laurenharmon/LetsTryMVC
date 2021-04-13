@@ -1,0 +1,29 @@
+﻿
+@using LetsTryMVC.ViewModels
+@model AddFriendViewModel
+
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add Friend</title>
+</head>
+<body>
+
+    <h3>Are you sure you want to add this friend?</h3>
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.UserName)
+            </dt>
+        </dl>
+
+        <form asp-action="AddFriend">
+            <input type="hidden" asp-for="@Model.UserId" />
+            <input type="submit" value="Add Friend" class="btn btn-success" /> |
+            <a asp-action="Index">Back to List</a>
+        </form>
+    </div>
+</body>
+</html>

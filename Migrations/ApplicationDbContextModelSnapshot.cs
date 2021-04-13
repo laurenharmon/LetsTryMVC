@@ -86,18 +86,34 @@ namespace LetsTryMVC.Migrations
                     b.ToTable("CustomerOrders");
                 });
 
+            modelBuilder.Entity("LetsTryMVC.Models.Friend", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<int?>("FriendsListId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("UserId");
+
+                    b.HasIndex("FriendsListId");
+
+                    b.ToTable("Friends");
+                });
+
             modelBuilder.Entity("LetsTryMVC.Models.FriendsList", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("UserIdId")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                    b.Property<string>("Reference")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserIdId");
 
                     b.ToTable("FriendsLists");
                 });
@@ -237,9 +253,6 @@ namespace LetsTryMVC.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int?>("FriendsListId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("tinyint(1)");
 
@@ -274,8 +287,6 @@ namespace LetsTryMVC.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FriendsListId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -379,11 +390,11 @@ namespace LetsTryMVC.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LetsTryMVC.Models.FriendsList", b =>
+            modelBuilder.Entity("LetsTryMVC.Models.Friend", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "UserId")
-                        .WithMany()
-                        .HasForeignKey("UserIdId");
+                    b.HasOne("LetsTryMVC.Models.FriendsList", null)
+                        .WithMany("Friends")
+                        .HasForeignKey("FriendsListId");
                 });
 
             modelBuilder.Entity("LetsTryMVC.Models.Photo", b =>
@@ -411,13 +422,6 @@ namespace LetsTryMVC.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.HasOne("LetsTryMVC.Models.FriendsList", null)
-                        .WithMany("Friends")
-                        .HasForeignKey("FriendsListId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>

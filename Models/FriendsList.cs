@@ -9,7 +9,10 @@ namespace LetsTryMVC.Models
     public class FriendsList
     {
         public int Id { get; set; }
-        public string UserId { get; set; }
-        public virtual ICollection<Microsoft.AspNetCore.Identity.IdentityUser> Friends { get; set; }
+        public string Reference { get; set; }
+        public List<Friend> Friends { get; set; }
+
+        public FriendsList() { }
+
     }
 }

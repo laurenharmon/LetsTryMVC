@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LetsTryMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210412192728_InitialAgain")]
-    partial class InitialAgain
+    [Migration("20210413003433_!")]
+    partial class _
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -86,6 +86,38 @@ namespace LetsTryMVC.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CustomerOrders");
+                });
+
+            modelBuilder.Entity("LetsTryMVC.Models.Friend", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<int?>("FriendsListId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("UserId");
+
+                    b.HasIndex("FriendsListId");
+
+                    b.ToTable("Friends");
+                });
+
+            modelBuilder.Entity("LetsTryMVC.Models.FriendsList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reference")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FriendsLists");
                 });
 
             modelBuilder.Entity("LetsTryMVC.Models.Photo", b =>
@@ -358,6 +390,13 @@ namespace LetsTryMVC.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("LetsTryMVC.Models.Friend", b =>
+                {
+                    b.HasOne("LetsTryMVC.Models.FriendsList", null)
+                        .WithMany("Friends")
+                        .HasForeignKey("FriendsListId");
                 });
 
             modelBuilder.Entity("LetsTryMVC.Models.Photo", b =>

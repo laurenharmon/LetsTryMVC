@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LetsTryMVC.Migrations
 {
-    public partial class InitialAgain : Migration
+    public partial class _ : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -81,6 +81,19 @@ namespace LetsTryMVC.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CustomerOrders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FriendsLists",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Reference = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FriendsLists", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -235,6 +248,25 @@ namespace LetsTryMVC.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Friends",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(nullable: false),
+                    UserName = table.Column<string>(nullable: true),
+                    FriendsListId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Friends", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_Friends_FriendsLists_FriendsListId",
+                        column: x => x.FriendsListId,
+                        principalTable: "FriendsLists",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Carts",
                 columns: table => new
                 {
@@ -299,6 +331,11 @@ namespace LetsTryMVC.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Friends_FriendsListId",
+                table: "Friends",
+                column: "FriendsListId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Photos_CategoryId",
                 table: "Photos",
                 column: "CategoryId");
@@ -333,6 +370,9 @@ namespace LetsTryMVC.Migrations
                 name: "CustomerOrders");
 
             migrationBuilder.DropTable(
+                name: "Friends");
+
+            migrationBuilder.DropTable(
                 name: "Photos");
 
             migrationBuilder.DropTable(
@@ -343,6 +383,9 @@ namespace LetsTryMVC.Migrations
 
             migrationBuilder.DropTable(
                 name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "FriendsLists");
 
             migrationBuilder.DropTable(
                 name: "Categories");
