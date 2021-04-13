@@ -68,6 +68,12 @@ namespace LetsTryMVC.Controllers
             return doesFriendHaveProfile;
         }
 
+        public int GetRelationId(UserProfile user, UserProfile friend)
+        {
+            var areFriends = _context.Friends.FirstOrDefault(x => x.UserId == user.Id && x.FriendId == friend.Id);
+            return areFriends.RelationId;
+        }
+
         public IActionResult AddFriend(string id)
         {
             var user = GetUser();
@@ -80,18 +86,25 @@ namespace LetsTryMVC.Controllers
             };
             _context.Friends.Add(besties);
             _context.SaveChanges();
-            return RedirectToAction("MyFriends");
+            return RedirectToAction("MyFriends", "FriendsList", id);
         }
 
         public IActionResult MyFriends()
         {
-            //var findUserPhotos = _context.Photos
-            //.Where(p => p.UserName == User.Identity.Name)
-            //.Include(p => p.Category);
             var user = GetUser();
-            List<Friends> friends = _context.Friends.Where(x => x.UserId == user.Id).Include(x => x.Friend).ToList();
-            
-            return View(friends);
+            var myFriendships = _context.Friends.Where(x => x.UserId == user.Id || x.FriendId == user.Id)
+                .Include(x => x.User)
+                .Include(x => x.Friend)
+                .ToList();
+            var self = myFriendships.Find(x => x.Friend.UserName == user.UserName);
+            myFriendships.Remove(self);
+
+            return View(myFriendships);
+        }
+
+        public IActionResult RemoveFriend(int id)
+        {
+
         }
     }
 }

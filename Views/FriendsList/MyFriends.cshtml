@@ -1,8 +1,18 @@
 ﻿@model List<Friends>
+
+
 <h1>Your Friends:</h1>
 
-@foreach(var friend in Model)
-            {
-                @friend.Friend.UserName
-            }
-            
+<table class="table">
+    <tr>
+        <th scope="col">Name</th>
+
+    </tr>
+    @foreach (var friend in Model)
+    {
+        <tr>
+            <td>@friend.Friend.UserName</td>
+        </tr>
+    }
+    </table>
+
