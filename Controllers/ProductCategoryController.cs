@@ -1,6 +1,7 @@
 ﻿using LetsTryMVC.Data;
 using LetsTryMVC.Models;
 using LetsTryMVC.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace LetsTryMVC.Controllers
 {
+    [Authorize]
     public class ProductCategoryController : Controller
     {
         private ApplicationDbContext _context;

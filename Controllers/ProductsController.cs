@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using LetsTryMVC.Data;
 using LetsTryMVC.Models;
 using LetsTryMVC.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LetsTryMVC.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -21,6 +23,7 @@ namespace LetsTryMVC.Controllers
         }
 
         // GET: Products
+        [AllowAnonymous]
         public IActionResult Index()
         {
             List<Product> prdcts = _context.Products
