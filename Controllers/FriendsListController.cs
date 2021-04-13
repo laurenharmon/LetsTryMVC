@@ -86,7 +86,7 @@ namespace LetsTryMVC.Controllers
             };
             _context.Friends.Add(besties);
             _context.SaveChanges();
-            return RedirectToAction("MyFriends", "FriendsList", id);
+            return RedirectToAction("MyFriends");
         }
 
         public IActionResult MyFriends()
@@ -104,7 +104,16 @@ namespace LetsTryMVC.Controllers
 
         public IActionResult RemoveFriend(int id)
         {
+            var user = GetUser();
+            var friend = _context.Profiles.First(x => x.Id == id);
+            var toRemove = _context.Friends.First(x => x.Friend.UserName == friend.UserName && x.User.UserName == user.UserName 
+            || x.Friend.UserName == user.UserName && x.User.UserName == friend.UserName);
 
+            
+            _context.Friends.Remove(toRemove);
+            _context.SaveChanges();
+
+            return RedirectToAction("MyFriends");
         }
     }
 }

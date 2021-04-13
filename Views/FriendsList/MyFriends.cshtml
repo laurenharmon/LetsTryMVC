@@ -6,13 +6,14 @@
 <table class="table">
     <tr>
         <th scope="col">Name</th>
-
+        <th></th>
     </tr>
     @foreach (var friend in Model)
     {
-        <tr>
-            <td>@friend.Friend.UserName</td>
-        </tr>
+<tr>
+    <td>@friend.Friend.UserName</td>
+    <td>@Html.ActionLink("Remove Friend", "RemoveFriend", "FriendsList", new { id = friend.Friend.Id }, new { @class = "btn btn-danger" })</td>
+</tr>
     }
     </table>
 
