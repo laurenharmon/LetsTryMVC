@@ -94,14 +94,12 @@ namespace LetsTryMVC.Controllers
         public IActionResult MyFriends()
         {
             var user = GetUser();
-            var myFriendships = _context.Friends.Where(x => x.UserId == user.Id || x.FriendId == user.Id)
+            var myFriends = _context.Friends.Where(x => x.UserId == user.Id)
                 .Include(x => x.User)
                 .Include(x => x.Friend)
                 .ToList();
-            var self = myFriendships.Find(x => x.Friend.UserName == user.UserName);
-            myFriendships.Remove(self);
 
-            return View(myFriendships);
+            return View(myFriends);
         }
 
         public IActionResult RemoveFriend(int id)

@@ -1,0 +1,42 @@
+﻿@model List<Photo>
+
+@{
+    ViewData["Title"] = "Photos";
+}
+
+<h2 class="text-center">
+    <span>Their Photos:</span>
+</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                Image
+            </th>
+            <th>
+                Category
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    <img src="@("~/image/"+item.ImageName)" asp-append-version="true" width="250" height="250" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Name)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

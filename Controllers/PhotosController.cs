@@ -105,6 +105,16 @@ namespace LetsTryMVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult TheirPhotos(string userName)
+        {
+            var findUserPhotos = _context.Photos
+             .Where(p => p.UserName == userName)
+             .Include(p => p.Category)
+             .ToList();
+
+            return View(findUserPhotos);
+        }
+
         private bool PhotoExists(int id)
         {
             return _context.Photos.Any(e => e.Id == id);
