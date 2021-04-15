@@ -32,15 +32,18 @@ namespace LetsTryMVC.Models
 
         public string Phone { get; set; }
         public string Email { get; set; }
+        public string CardNumber { get; set; }
+        public string Expiration { get; set; }
 
-        [ScaffoldColumn(false)]
+        public string SecCode { get; set; }
+        public string CardOwner { get; set; }
+
         public DateTime DateCreated { get; set; }
 
-        [ScaffoldColumn(false)]
         public Decimal Amount { get; set; }
 
         public CustomerOrder(string firstName, string lastName, string address, string city, string state, string postalCode, string country, 
-            string phone, string email, DateTime dateCreated)
+            string phone, string email, DateTime dateCreated, string cardNumber, string expiration, string cardOwner)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -52,6 +55,9 @@ namespace LetsTryMVC.Models
             Phone = phone;
             Email = email;
             DateCreated = dateCreated;
+            CardNumber = cardNumber;
+            Expiration = expiration;
+            CardOwner = cardOwner;
         }
 
         public CustomerOrder() { }

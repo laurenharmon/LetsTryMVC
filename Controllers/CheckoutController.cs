@@ -40,7 +40,7 @@ namespace LetsTryMVC.Controllers
         {
             if (orderViewModel != null)
             {
-
+                var amount = 
                 CustomerOrder newOrder = new CustomerOrder
                 {
                     FirstName = orderViewModel.FirstName,
@@ -52,8 +52,12 @@ namespace LetsTryMVC.Controllers
                     Country = orderViewModel.Country,
                     Phone = orderViewModel.Phone,
                     Email = orderViewModel.Email,
-                    DateCreated = orderViewModel.DateCreated,
-                    Amount = orderViewModel.Amount
+                    CardNumber = orderViewModel.CardNumber,
+                    Expiration = orderViewModel.Expiration,
+                    SecCode = orderViewModel.SecCode,
+                    CardOwner = orderViewModel.CardOwner,
+                    DateCreated = DateTime.Now,
+                    Amount = amount
                 };
  
                 _context.CustomerOrders.Add(newOrder);

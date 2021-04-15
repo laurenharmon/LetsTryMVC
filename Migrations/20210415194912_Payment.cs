@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LetsTryMVC.Migrations
 {
-    public partial class FriendsList : Migration
+    public partial class Payment : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -75,6 +75,10 @@ namespace LetsTryMVC.Migrations
                     Country = table.Column<string>(nullable: true),
                     Phone = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
+                    CardNumber = table.Column<string>(nullable: true),
+                    Expiration = table.Column<string>(nullable: true),
+                    SecCode = table.Column<string>(nullable: true),
+                    CardOwner = table.Column<string>(nullable: true),
                     DateCreated = table.Column<DateTime>(nullable: false),
                     Amount = table.Column<decimal>(nullable: false)
                 },

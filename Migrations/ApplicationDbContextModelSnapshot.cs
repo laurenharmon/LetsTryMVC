@@ -54,6 +54,12 @@ namespace LetsTryMVC.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(65,30)");
 
+                    b.Property<string>("CardNumber")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("CardOwner")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("City")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -66,6 +72,9 @@ namespace LetsTryMVC.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<string>("Expiration")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("FirstName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -76,6 +85,9 @@ namespace LetsTryMVC.Migrations
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("PostalCode")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("SecCode")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("State")

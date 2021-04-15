@@ -40,10 +40,25 @@ namespace LetsTryMVC.ViewModels
             ErrorMessage = "Email is is not valid.")]
       
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "Card Number is required")]
+        [StringLength(19, MinimumLength = 13, ErrorMessage = "Please enter a valid credit card number with no spaces or dashes.")]
+
+        public string CardNumber { get; set; }
+
+        [Required(ErrorMessage = "Expiration Date is required")]
+        [StringLength(7, MinimumLength = 7, ErrorMessage = "Expiration Date must be MM/YYYY")]
+        public string Expiration { get; set; }
+
+        [Required(ErrorMessage = "Security Code is required")]
+        [StringLength(3, MinimumLength = 3, ErrorMessage = "Security Code must be 3 digits.")]
+        public string SecCode { get; set; }
+
+        [Required(ErrorMessage = "Card Owner's name is required.")]
+        public string CardOwner { get; set; }
         public DateTime DateCreated { get; set; }
 
         public Decimal Amount { get; set; }
-
         public CustomerOrderViewModel(decimal amount)
         {
             Amount = Convert.ToDecimal(amount.ToString("F",
