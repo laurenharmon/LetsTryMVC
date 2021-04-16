@@ -1,0 +1,21 @@
+﻿@model List<CustomerOrder>
+
+@{
+    ViewBag.Title = "My Orders";
+}
+
+<table class="table">
+    <tr>
+        <th scope="col">Order Number</th>
+        <th scope="col">Order Date</th>
+        <th scope="col">Total</th>
+    </tr>
+    @foreach (var order in Model)
+    {
+        <tr>
+            <td>@order.Id</td>
+            <td>@order.DateCreated.ToLongDateString()</td>
+            <td>@order.Amount.ToString("c")</td>
+        </tr>
+    }
+</table>

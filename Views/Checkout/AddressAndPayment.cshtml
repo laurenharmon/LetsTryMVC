@@ -156,7 +156,7 @@
                 <label asp-for="Amount">Total: </label>
                 <div class="text-success">$@Html.DisplayFor(model => model.Amount)</div>
             </strong>
-            <input type="hidden" asp-for="Amount" value="@Html.DisplayFor(model => model.Amount)" />
+            <input type="hidden" asp-for="Amount" value="@Html.ValueFor(model => model.Amount)" />
             <span asp-validation-for="Amount"></span>
         </div>
         <div class="form-group">

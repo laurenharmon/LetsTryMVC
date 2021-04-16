@@ -4,17 +4,16 @@
     ViewBag.Title = "Checkout Complete";
 }
 
-<div>
+<div class="text-lg-center">
     <h2>Checkout Complete</h2>
-    <p>
+    <span>
         Thanks for your order!
+    </span>
+    <span>
         Your Order Number is: #@Model
-    </p>
-   
+    </span>
 </div>
 <div>
-    <p>
-        How about shopping for another box?
-        @Html.ActionLink("Products", "Index", "Products")
-    </p>
+    <span>@Html.ActionLink("How about another box?", "Index", "Products")</span>
+    <span>@Html.ActionLink("My Orders", "Index", "Orders")</span>
 </div>
