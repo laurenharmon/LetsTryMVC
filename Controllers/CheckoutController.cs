@@ -19,10 +19,6 @@ namespace LetsTryMVC.Controllers
             _context = context;
         }
 
-
- 
-        const String PromoCode = "DEVELOPER";
-
         public IActionResult Index()
         {
             return View();
@@ -54,7 +50,7 @@ namespace LetsTryMVC.Controllers
                     Email = orderViewModel.Email,
                     CardNumber = orderViewModel.CardNumber,
                     Expiration = orderViewModel.Expiration,
-                    SecCode = orderViewModel.SecCode,
+                    //SecCode = orderViewModel.SecCode,
                     CardOwner = orderViewModel.CardOwner,
                     DateCreated = DateTime.Now,
                     Amount = orderViewModel.Amount

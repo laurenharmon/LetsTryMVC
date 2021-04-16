@@ -6,14 +6,21 @@
 
 <div class="text-lg-center">
     <h2>Checkout Complete</h2>
-    <span>
+    <p>
         Thanks for your order!
-    </span>
-    <span>
+    </p>
+    <p>
         Your Order Number is: #@Model
-    </span>
+    </p>
+    <button style=" height: 60px; border: none; position: relative; font-size: 18px; font-weight: 700; letter-spacing: 1px; background-color: #FCB9AA; color: black;">
+        <span style="display: inline;">@Html.ActionLink("How about another box?", "Index", "Products", null, new { @style = "color:black;" })</span>
+    </button>
+    <br />
+    <button style=" height: 60px; border: none; position: relative; font-size: 18px; font-weight: 700; letter-spacing: 1px; background-color: #FCB9AA; color: black;">
+        <span style="display: inline;">@Html.ActionLink("My Orders", "Index", "Orders", null, new { @style = "color:black;" })</span>
+    </button>
 </div>
-<div>
-    <span>@Html.ActionLink("How about another box?", "Index", "Products")</span>
-    <span>@Html.ActionLink("My Orders", "Index", "Orders")</span>
-</div>
+
+
+
+

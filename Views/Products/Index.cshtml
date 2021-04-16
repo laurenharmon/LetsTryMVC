@@ -17,13 +17,17 @@
     </tr>
     @foreach (var product in Model)
     {
-        <tr>
-            <td>@product.Name</td>
-            <td>@product.Description</td>
-            <td>@product.Price.ToString("c")</td>
-            <td>@product.Category.Name</td>
-            <td>@Html.ActionLink("Add to cart", "AddToCart", "ShoppingCart", new { id = product.Id }, new { @class = "btn btn-info" })</td>
-         </tr>
+<tr>
+    <td>@product.Name</td>
+    <td>@product.Description</td>
+    <td>@product.Price.ToString("c")</td>
+    <td>@product.Category.Name</td>
+    <td>
+        <button style="border: none; background-color: #FCB9AA; color: black;">
+            <span style="display: inline;">@Html.ActionLink("Add to cart", "AddToCart", "ShoppingCart", new { id = product.Id }, new { @style = "color:black;" })</span>
+        </button>
+    </td>
+</tr>
 
     }
 </table>
