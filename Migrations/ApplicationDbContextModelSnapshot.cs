@@ -156,6 +156,9 @@ namespace LetsTryMVC.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<string>("ImageName")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("datetime(6)");
 

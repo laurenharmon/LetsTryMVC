@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LetsTryMVC.Migrations
 {
-    public partial class Payment : Migration
+    public partial class ProdPhoto : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -237,6 +237,7 @@ namespace LetsTryMVC.Migrations
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Price = table.Column<decimal>(nullable: false),
+                    ImageName = table.Column<string>(nullable: true),
                     CategoryId = table.Column<int>(nullable: false),
                     LastUpdated = table.Column<DateTime>(nullable: false)
                 },

@@ -1,8 +1,10 @@
 ﻿using LetsTryMVC.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +22,8 @@ namespace LetsTryMVC.ViewModels
 
         [Required(ErrorMessage = "Price is required.")]
         public int Price { get; set; }
+        public string ImageName { get; set; }
+        public IFormFile ImageFile { get; set; }
         public DateTime LastUpdated { get; set; }
 
         public int CategoryId { get; set; }

@@ -9,6 +9,8 @@ using LetsTryMVC.Data;
 using LetsTryMVC.Models;
 using LetsTryMVC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace LetsTryMVC.Controllers
 {
@@ -16,10 +18,12 @@ namespace LetsTryMVC.Controllers
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public ProductsController(ApplicationDbContext context)
+        public ProductsController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
         {
             _context = context;
+            this._hostEnvironment = hostEnvironment;
         }
 
         // GET: Products
@@ -66,13 +70,25 @@ namespace LetsTryMVC.Controllers
             if (addProductViewModel != null)
             {
                 ProductCategory category = _context.Categories.Find(addProductViewModel.CategoryId);
+
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string fileName = Path.GetFileNameWithoutExtension(addProductViewModel.ImageFile.FileName);
+                string extension = Path.GetExtension(addProductViewModel.ImageFile.FileName);
+                addProductViewModel.ImageName = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
+                string path = Path.Combine(wwwRootPath + "/Image/", fileName);
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    addProductViewModel.ImageFile.CopyToAsync(fileStream);
+                }
+
                 Product newProduct = new Product
                 {
                     Name = addProductViewModel.Name,
                     Description = addProductViewModel.Description,
                     Price = addProductViewModel.Price,
                     Category = category,
-                    LastUpdated = addProductViewModel.LastUpdated
+                    LastUpdated = addProductViewModel.LastUpdated,
+                    ImageName = addProductViewModel.ImageName
                 };
 
                 _context.Products.Add(newProduct);

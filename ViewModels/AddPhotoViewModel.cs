@@ -16,6 +16,8 @@ namespace LetsTryMVC.ViewModels
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Name must be between 3 and 50 characters.")]
         public string Title { get; set; }
         public string ImageName { get; set; }
+
+        [Required(ErrorMessage ="Please choose a photo.")]
         public IFormFile ImageFile { get; set; }
 
         [Required(ErrorMessage ="You must choose a category")]
