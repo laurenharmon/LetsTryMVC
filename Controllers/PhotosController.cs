@@ -115,8 +115,11 @@ namespace LetsTryMVC.Controllers
             return View(findUserPhotos);
         }
 
+        [Route("/AllPhotos/category")]
         public IActionResult AllPhotos(string category)
         {
+            ViewBag.Categories = _context.Categories.ToList();
+
             var picsWithCategory = _context.Photos.Where(p => p.Category.Name == category)
                 .ToList();
             ViewBag.category = category;

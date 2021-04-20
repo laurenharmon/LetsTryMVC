@@ -171,7 +171,7 @@ namespace LetsTryMVC.Controllers
 
         public IActionResult CartSummary()
         {
-            ViewData["CartCount"] = GetCount();
+            ViewBag.Count = GetCount();
             return PartialView("_CartSummaryPartial");
         }
 
