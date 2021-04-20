@@ -115,6 +115,14 @@ namespace LetsTryMVC.Controllers
             return View(findUserPhotos);
         }
 
+        public IActionResult AllPhotos(string category)
+        {
+            var picsWithCategory = _context.Photos.Where(p => p.Category.Name == category)
+                .ToList();
+            ViewBag.category = category;
+            return View(picsWithCategory);
+        }
+
         private bool PhotoExists(int id)
         {
             return _context.Photos.Any(e => e.Id == id);

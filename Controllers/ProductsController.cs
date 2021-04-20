@@ -87,7 +87,7 @@ namespace LetsTryMVC.Controllers
                     Description = addProductViewModel.Description,
                     Price = addProductViewModel.Price,
                     Category = category,
-                    LastUpdated = addProductViewModel.LastUpdated,
+                    LastUpdated = DateTime.Now,
                     ImageName = addProductViewModel.ImageName
                 };
 
@@ -123,7 +123,7 @@ namespace LetsTryMVC.Controllers
             editProduct.Description = product.Description;
             editProduct.Price = product.Price;
             editProduct.CategoryId = product.CategoryId;
-            //editProduct.Category = product.Category;
+            editProduct.Category = product.Category;
             editProduct.LastUpdated = product.LastUpdated;
 
             _context.SaveChanges();

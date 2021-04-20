@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LetsTryMVC.Models.Photo>
+﻿@model List<Photo>
 
 @{
     ViewData["Title"] = "Photos";
@@ -6,12 +6,9 @@
 
 <div class="mx-auto px-3 py-3 pt-md-5 pb-md-4 text-center">
     <h2>
-        <span>Your Photos</span>
+        <span>Photos for the @ViewBag.category Project</span>
     </h2>
-    <div>
-        <a asp-action="Create" class="btn btn-outline-primary">Add a new photo</a>
-    </div>
-</div>
+</div> 
 
 <div class="container">
     <div class="card-deck mb-3 text-center" align="center">
@@ -26,9 +23,7 @@
                         <div class="card-body">
                             <img src="@("~/image/"+item.ImageName)" asp-append-version="true" width="250" height="250" />
                             <p>@Html.DisplayFor(modelItem => item.Category.Name)</p>
-                            @Html.ActionLink("See all photos for this project", "AllPhotos", "Photos", new { category = item.Category.Name }, new { @class = "btn btn-outline-info" })
-                            <br />
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger m-2">Delete</a>
+                            <p>Uploaded by: @Html.DisplayFor(modelItem => item.UserName)</p>
                         </div>
                     </div>
                 </div>

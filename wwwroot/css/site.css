@@ -19,11 +19,23 @@ a {
     border: none;
 }
 
+.btn-outline-primary {
+    color: #FCB9AA !important;
+    border-color: #FCB9AA !important;
+}
+
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+#content {
+    width: 400px;
+    margin: 0 auto;
+    /*background-color: #66ffff;*/
+}
+
 
 /* Sticky footer styles
 -------------------------------------------------- */
