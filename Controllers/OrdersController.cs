@@ -23,6 +23,8 @@ namespace LetsTryMVC.Controllers
             var orders = _context.CustomerOrders
                 .Where(x => x.Email == User.Identity.Name)
                 .ToList();
+
+            ViewBag.User = User.Identity.Name;
             return View(orders);
         }
     }

@@ -21,6 +21,11 @@
         {
             <tr>
                 <td>@category.Name</td>
+                <td>
+                    <p>
+                        <a asp-controller="ProductCategory" asp-action="Delete" asp-route-id="@category.Id">Remove Category</a>
+                    </p>
+                </td>
             </tr>
 
         }

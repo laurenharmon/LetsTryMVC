@@ -111,7 +111,7 @@ namespace LetsTryMVC.Controllers
              .Where(p => p.UserName == userName)
              .Include(p => p.Category)
              .ToList();
-
+            ViewBag.User = userName;
             return View(findUserPhotos);
         }
 
@@ -119,10 +119,25 @@ namespace LetsTryMVC.Controllers
         public IActionResult AllPhotos(string category)
         {
             ViewBag.Categories = _context.Categories.ToList();
+            ProductCategory All = new ProductCategory
+            {
+                Name = "All"
+            };
 
-            var picsWithCategory = _context.Photos.Where(p => p.Category.Name == category)
-                .ToList();
+            ViewBag.Categories.Add(All);
+            List<Photo> picsWithCategory = new List<Photo>();
+
+            if(category == "All")
+            {
+                picsWithCategory = _context.Photos.ToList();
+            } else
+            {
+                picsWithCategory = _context.Photos.Where(p => p.Category.Name == category)
+                                .ToList();
+            }
+            
             ViewBag.category = category;
+            
             return View(picsWithCategory);
         }
 
