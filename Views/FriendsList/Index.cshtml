@@ -19,17 +19,13 @@ else
     {
     <tr>
         <td>@user.UserName</td>
-        @foreach(var name in ViewBag.friendNames)
-                    {
-                        if(name == user.UserName)
-                        {
-                            <td><p>Already Friends</p></td>
-                        } else
-                        {
-    <td>@Html.ActionLink("Add Friend", "AddFriend", "FriendsList", new { id = user.Id }, new { @class = "btn btn-dark" })</td>
-                        }
-                    }
-        
+        @if(ViewBag.friendNames.Contains(user.UserName)) 
+            {
+                <td><button type="button" class="btn btn-primary" disabled>Already Friends</button></td>
+            } else 
+            {
+                <td>@Html.ActionLink("Add Friend", "AddFriend", "FriendsList", new { id = user.Id }, new { @class = "btn btn-primary" })</td>
+            }
     </tr>
     }
 </table>

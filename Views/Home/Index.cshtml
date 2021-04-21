@@ -17,12 +17,9 @@
              style="top: 50%; -ms-transform: translateY(50%); display: flex; flex-direction: column; float: right; text-align:center; align-content:center;">
             <h1>Get the Box.</h1>
             <h5>Make Your Next Favorite Thing.</h5>
-            <button class="myButton" style="background-color: #FCB9AA; border: none; height: 60px; position: relative; font-size: 18px; font-weight: 700; letter-spacing: 1px; color: black;">
-                <span style="display: inline;">@Html.ActionLink("Get Started", "Index", "Products", null, new { @style = "color:black;" })</span>
-            </button> <br />
-            <button style=" height: 40px; border: none; position: relative; font-size: 14px; font-weight: 700; letter-spacing: 1px; background-color: #FCB9AA; color: black;">
-                <span style="display: inline;"><a asp-area="Identity" asp-page="/Account/Register" style="color:black;">Register As A Member</a></span>
-            </button>
+            <span style="display: inline;">@Html.ActionLink("Get Started", "Index", "Products", null, new { @class = "btn btn-block btn-primary mb-3" })</span>
+            <span style="display: inline;"><a asp-area="Identity" asp-page="/Account/Register" style="color:black;" class="btn btn-outline-primary">Register As A Member</a></span>
+
         </div>
     </section>
 </div>
