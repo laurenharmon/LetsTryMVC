@@ -3,37 +3,30 @@
 
 @model IEnumerable<LetsTryMVC.Models.Product>
 
-    <h1>Products</h1>
-    <p>
-        <a asp-controller="Products" asp-action="Create">Add Product To List</a>
-    </p>
+<h1>Products</h1>
+<p>
+    <a asp-controller="Products" asp-action="Create">Add Product To List</a>
+</p>
 
-    <table class="table">
-        <tr>
-            <th scope="col">Name</th>
-            <th></th>
-            <th scope="col">Description</th>
-            <th scope="col">Price</th>
-            <th scope="col">Category</th>
-            <th scope="col">Add Item To Cart</th>
+<table>
+    @foreach (var product in Model)
+    {
+    <tr>
+        <div class="media">
+            <img class="align-self-center mr-3" src="@Url.Content("~/image/" + product.ImageName)" asp-append-version="true" width="250" height="250">
+            <div class="media-body">
+                <h3 class="mt-3 mb-1">@product.Name</h3>
+                <p>@product.Description</p>
+                <h5 style="text-align: right;">@product.Price.ToString("c")</h5>
+                <button class="btn btn-primary float-right">
+                    <span style="display: inline;">@Html.ActionLink("Add to cart", "AddToCart", "ShoppingCart", new { id = product.Id }, new { @style = "color:black;" })</span>
+                </button>
+                <button class="btn btn-outline-info btn-sm">
+                    <span style="display: inline;">@Html.ActionLink("See Photos of This Product From Other Users!", "AllPhotos", "Photos", new { category = product.Category.Name })</span>
+                </button>
 
-        </tr>
-        @foreach (var product in Model)
-        {
-            <tr>
-                <td>@product.Name</td>
-                <td>
-                    <img src="@Url.Content("~/image/" + product.ImageName)" asp-append-version="true" width="250" height="250" />
-                </td>
-                <td>@product.Description</td>
-                <td>@product.Price.ToString("c")</td>
-                <td>@product.Category.Name</td>
-                <td>
-                    <button style="border: none; background-color: #FCB9AA; color: black;">
-                        <span style="display: inline;">@Html.ActionLink("Add to cart", "AddToCart", "ShoppingCart", new { id = product.Id }, new { @style = "color:black;" })</span>
-                    </button>
-                </td>
-            </tr>
-
-        }
-    </table>
+            </div>
+        </div>
+    </tr>
+    }
+</table>

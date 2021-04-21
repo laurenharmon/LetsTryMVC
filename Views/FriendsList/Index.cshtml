@@ -7,8 +7,9 @@
 <div class="align-content-center my-auto">
     <h4 style="text-align: center"> Looks like there aren't anymore friends to add! &#9786;</h4>
 </div>
-} else
-{         
+}
+else
+{
 <table class="table">
     <tr>
         <th scope="col">Name</th>
@@ -16,11 +17,20 @@
     </tr>
     @foreach (var user in Model)
     {
-        <tr>
-            <td>@user.UserName</td>
-            <td>@Html.ActionLink("Add Friend", "AddFriend", "FriendsList", new { id = user.Id }, new { @class = "btn btn-dark" })</td>
-        </tr>
-
+    <tr>
+        <td>@user.UserName</td>
+        @foreach(var name in ViewBag.friendNames)
+                    {
+                        if(name == user.UserName)
+                        {
+                            <td><p>Already Friends</p></td>
+                        } else
+                        {
+    <td>@Html.ActionLink("Add Friend", "AddFriend", "FriendsList", new { id = user.Id }, new { @class = "btn btn-dark" })</td>
+                        }
+                    }
+        
+    </tr>
     }
 </table>
 }
