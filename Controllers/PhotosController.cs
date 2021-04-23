@@ -111,7 +111,7 @@ namespace LetsTryMVC.Controllers
              .Where(p => p.UserName == userName)
              .Include(p => p.Category)
              .ToList();
-            ViewBag.User = userName;
+            ViewBag.User = userName.Remove(userName.IndexOf("@"));
             return View(findUserPhotos);
         }
 

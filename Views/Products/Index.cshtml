@@ -13,9 +13,10 @@
     {
     <tr>
         <div class="media">
-            <img class="align-self-center mr-3" src="@Url.Content("~/image/" + product.ImageName)" asp-append-version="true" width="250" height="250">
+            <img class="align-self-center mr-3" src="@Url.Content("~/image/products/" + product.ImageName)" asp-append-version="true" width="250" height="250">
             <div class="media-body">
                 <h3 class="mt-3 mb-1">@product.Name</h3>
+                <h6><strong>@product.Category.Name</strong></h6>
                 <p>@product.Description</p>
                 <h5 style="text-align: right;">@product.Price.ToString("c")</h5>
                 <button class="btn btn-primary float-right">

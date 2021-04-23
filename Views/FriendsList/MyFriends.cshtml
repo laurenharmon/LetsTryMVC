@@ -20,8 +20,8 @@
         @foreach (var friend in Model)
         {
             <tr>
-                <td>@friend.Friend.UserName</td>
-                <td>@Html.ActionLink(@friend.Friend.UserName + "'s Photos", "TheirPhotos", "Photos", new { userName = friend.Friend.UserName }, new { @class = "btn btn-primary" })</td>
+                <td>@friend.Friend.UserName.Remove(friend.Friend.UserName.IndexOf("@")) </td>
+                <td>@Html.ActionLink("See " +@friend.Friend.UserName.Remove(friend.Friend.UserName.IndexOf("@")) + "'s Photos", "TheirPhotos", "Photos", new { userName = friend.Friend.UserName }, new { @class = "btn btn-primary" })</td>
                 <td>@Html.ActionLink("Remove Friend", "RemoveFriend", "FriendsList", new { id = friend.Friend.Id }, new { @class = "btn btn-secondary" })</td>
             </tr>
         }

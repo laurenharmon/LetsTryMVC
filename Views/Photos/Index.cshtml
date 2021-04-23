@@ -27,7 +27,7 @@
                         </div>
                         <div class="card-body">
                             <img src="@("~/image/"+item.ImageName)" asp-append-version="true" width="250" height="250" />
-                            <p>@Html.DisplayFor(modelItem => item.Category.Name)</p>
+                            <p><strong>@Html.DisplayFor(modelItem => item.Category.Name)</strong></p>
                             @Html.ActionLink("See all photos for this project", "AllPhotos", "Photos", new { category = item.Category.Name }, new { @class = "btn btn-outline-info" })
                             <br />
                             <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger m-2">Delete</a>

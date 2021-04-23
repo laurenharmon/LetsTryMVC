@@ -2,78 +2,96 @@
 @using System.Globalization
 @model LetsTryMVC.ViewModels.ShoppingCartViewModel
 
+
 @{
     ViewBag.Title = "Store Checkout";
     CultureInfo us = new CultureInfo("en-US");
 }
 
 
-@if (Model.CartItems.Count == 0)
-{
-<div class="align-content-center my-auto">
-    @Html.ActionLink("Your cart is empty. Continue Shopping!", "Index", "Products", null, new { @class = "btn btn-outline-info btn-lg btn-block" })
-</div>
-}
-else
-{
-    <table class="table">
-        <tr>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping Cart</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" ">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">*@
+    <link rel="stylesheet" href="~/css/shopping-cart.css">
+</head>
+<body>
+    <main class="page">
+        <section class="shopping-cart dark">
+            <div class="container">
+                <div class="block-heading">
+                    <h2>Shopping Cart</h2>
+                    @if (Model.CartItems.Count == 0)
+                    {
+                        <h4>Looks like you don't have any items, yet.</h4>
 
-            <th scope="col">
-                Product
-            </th>
-            <th scope="col">
-                Price
-            </th>
-            <th scope="col">
-                Quantity
-            </th>
-            <th scope="col">
-                Product Total
-            </th>
-            <th scope="col">
-                @*BLANK INTENTIONALLY*@
-            </th>
-        </tr>
+                    }
+                </div>
+                <div class="content">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-8">
+                            <div class="items">
+                                <div class="product">
+                                    @foreach (Cart item in Model.CartItems)
+                                    {
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <img class="img-fluid m-3 d-block image" style="border: 1px solid black;" src="@Url.Content("~/image/products/" + @item.Product.ImageName)">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="info">
+                                                    <div class="row">
+                                                        <div class="col-md-5 product-name">
+                                                            <div class="product-name">
+                                                                <h5>@item.Product.Name</h5>
+                                                                <div>@item.Product.Category.Name</div>
+                                                                <div class="product-info">
+                                                                    <div>Description:<p style="font-weight: 400"> @item.Product.Description</p></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 quantity">
+                                                            <label for="quantity">Quantity:</label>
 
-        @foreach (Cart item in Model.CartItems)
-        {
-            <tr>
-                <td scope="col">
-                    @item.Product.Name
-                </td>
-                <td scope="col">
-                    @item.Product.Price.ToString("c", us)
-                </td>
-                <td scope="col" id="item-count-@item.ProductId">
-                    @item.Count
-                </td>
-                <td scope="col">
-                    @((item.Product.Price*item.Count).ToString("c",us))
-                </td>
-                <td scope="col">
-                    @Html.ActionLink("Add Another To Cart", "AddToCart", "ShoppingCart", new { id = item.ProductId }, new { @class = "btn btn-success btn-sm" })
-                    @Html.ActionLink("Remove From Cart", "RemoveFromCart", "ShoppingCart", new { id = item.ProductId }, new { @class = "btn btn-outline-danger btn-sm" })
-                </td>
-            </tr>
-        }
-        <tr>
-            <th scope="col"><strong>Total: </strong></th>
-            <td scope="col"></td>
-            <td scope="col"></td>
-            <th id="cart-total" class="text-success" scope="col">@Model.CartTotal.ToString("C", us)</th>
-            <td scope="col"></td>
-        </tr>
-    </table>
-    <div class="container">
-        <div>
-            @Html.ActionLink("Checkout ", "AddressAndPayment", "Checkout", new { amount = Model.CartTotal }, new { @class = "btn btn-success btn-lg btn-block" })
-        </div>
-        <br />
-        <div>
-            @Html.ActionLink("Continue Shopping ", "Index", "Products", null, new { @class = "btn btn-outline-info btn-sm btn-block" })
-        </div>
+                                                            <div>
+                                                                @Html.ActionLink("-", "RemoveFromCart", "ShoppingCart", new { id = item.ProductId }, new { @class = "btn btn-outline-danger btn-sm" })
+                                                                @item.Count
+                                                                @Html.ActionLink("+", "AddToCart", "ShoppingCart", new { id = item.ProductId }, new { @class = "btn btn-success btn-sm" })
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3 price">
+                                                            <span>@((item.Product.Price*item.Count).ToString("c",us))</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
 
-    </div>
-}
-
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-4">
+                            <div class="summary">
+                                <h3>Summary</h3>
+                                <div class="summary-item"><span class="text">Subtotal</span><span class="price">@Model.CartTotal.ToString("C", us)</span></div>
+                                <div class="summary-item"><span class="text">Discount</span><span class="price">$0</span></div>
+                                <div class="summary-item"><span class="text">Shipping</span><span class="price">$0</span></div>
+                                <div class="summary-item"><span class="text">Total</span><span class="price">@Model.CartTotal.ToString("C", us)</span></div>
+                                @Html.ActionLink("Checkout ", "AddressAndPayment", "Checkout", new { amount = Model.CartTotal }, new { @class = "btn btn-primary btn-lg btn-block mt-3" })
+                                @Html.ActionLink("Continue Shopping ", "Index", "Products", null, new { @class = "btn btn-outline-primary btn-sm btn-block" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>

@@ -1,5 +1,6 @@
 ﻿using LetsTryMVC.Data;
 using LetsTryMVC.Models;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,7 +29,6 @@ namespace LetsTryMVC.Controllers
         {
             return View();
         }
-
 
         public IActionResult Contact()
         {
