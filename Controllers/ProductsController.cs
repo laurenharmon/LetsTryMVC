@@ -54,7 +54,8 @@ namespace LetsTryMVC.Controllers
 
             return View(product);
         }
-
+        
+        [Authorize]
         [HttpGet]
         public IActionResult Create()
         {
@@ -75,7 +76,7 @@ namespace LetsTryMVC.Controllers
                 string fileName = Path.GetFileNameWithoutExtension(addProductViewModel.ImageFile.FileName);
                 string extension = Path.GetExtension(addProductViewModel.ImageFile.FileName);
                 addProductViewModel.ImageName = fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
-                string path = Path.Combine(wwwRootPath + "/Image/", fileName);
+                string path = Path.Combine(wwwRootPath + "/Image/Products/", fileName);
                 using (var fileStream = new FileStream(path, FileMode.Create))
                 {
                     addProductViewModel.ImageFile.CopyToAsync(fileStream);
@@ -104,6 +105,8 @@ namespace LetsTryMVC.Controllers
         public IActionResult Edit(int? id)
         {
             Product editProduct = _context.Products.Find(id);
+            ViewBag.product = editProduct;
+
             ViewBag.Title = "Edit: " + editProduct.ToString();
 
             return View();
@@ -122,14 +125,12 @@ namespace LetsTryMVC.Controllers
             editProduct.Name = product.Name;
             editProduct.Description = product.Description;
             editProduct.Price = product.Price;
-            editProduct.CategoryId = product.CategoryId;
+            editProduct.LastUpdated = DateTime.Now;
             editProduct.Category = product.Category;
-            editProduct.LastUpdated = product.LastUpdated;
 
             _context.SaveChanges();
 
             return Redirect("/Products");
-
         }
 
         // GET: Products/Delete/5
@@ -156,6 +157,14 @@ namespace LetsTryMVC.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             Product product = _context.Products.Find(id);
+            //var imageModel =  _context.Photos.FindAsync(id);
+
+            //delete image from wwwroot/image
+            var imagePath = Path.Combine(_hostEnvironment.WebRootPath, "image", "products", product.ImageName);
+            if (System.IO.File.Exists(imagePath))
+                System.IO.File.Delete(imagePath);
+            //delete the record
+
             _context.Products.Remove(product);
 
             _context.SaveChanges();

@@ -21,7 +21,7 @@ namespace LetsTryMVC.ViewModels
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Price is required.")]
-        public int Price { get; set; }
+        public decimal Price { get; set; }
         public string ImageName { get; set; }
         public IFormFile ImageFile { get; set; }
         public DateTime LastUpdated { get; set; }

@@ -122,7 +122,7 @@ namespace LetsTryMVC.Controllers
             //string shoppingCartId = getCart.ShoppingCartId;
             var returnCart = _context.Carts.Where(cart => cart.CartId == Cart.ShoppingCartId);
   
-            return returnCart.Include(x => x.Product).ToList();          
+            return returnCart.Include(x => x.Product).Include(x => x.Product.Category).ToList();          
                 
         }
 
