@@ -19,7 +19,7 @@
             {
                 <a class="dropdown-item" asp-controller="Photos" asp-action="AllPhotos" asp-route-category="@category.Name">@category.Name</a>
             }
-            @*<a class="dropdown-item" asp-controller="Photos" asp-action="AllPhotos" asp-route-category="All">All Photos</a>*@
+            <a class="dropdown-item" asp-controller="Photos" asp-action="AllPhotos" asp-route-category="All">All Photos</a>
         </div>
     </div>
 </div>
@@ -28,7 +28,14 @@ else
 {
     <div class="mx-auto px-3 py-3 pt-md-5 pb-md-4 text-center">
         <h2>
-            <span>Photos for the @ViewBag.category Project</span>
+            @if(ViewBag.Category == "All")
+                {
+                    <span>All Photos</span>
+                } else
+                {
+                    <span>Photos for the @ViewBag.category Project</span>
+                }
+            
         </h2>
         <div>
             <p>Want to see a different project's photos?</p>
@@ -40,6 +47,7 @@ else
                 {
                     <a class="dropdown-item" asp-controller="Photos" asp-action="AllPhotos" asp-route-category="@category.Name">@category.Name</a>
                 }
+                <a class="dropdown-item" asp-controller="Photos" asp-action="AllPhotos" asp-route-category="All">All Photos</a>
             </div>
         </div>
     </div>
@@ -57,7 +65,9 @@ else
                             <div class="card-body">
                                 <img src="@("~/image/"+item.ImageName)" asp-append-version="true" width="250" height="250" />
                                 <p><strong>@Html.DisplayFor(modelItem => item.Category.Name)</strong></p>
+                                <span>@Html.ActionLink("Get this box", "SearchProducts", "Products", new { category = item.Category.Name }, new {  @class = "btn btn-primary btn-sm btn-block mb-3"})</span>
                                 <p>Uploaded by: @Html.DisplayFor(modelItem => item.UserName)</p>
+
                             </div>
                         </div>
                     </div>

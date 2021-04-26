@@ -1,17 +1,32 @@
-﻿@model IEnumerable<LetsTryMVC.Models.Photo>
+﻿@model List<Photo>
 
 @{
     ViewData["Title"] = "Photos";
 }
-
+@if (Model.Count == 0)
+{
 <div class="mx-auto px-3 py-3 pt-md-5 pb-md-4 text-center">
     <h2>
-        <span>Your Photos</span>
+        <span>Your Photos: </span>
+    </h2>
+    <h5>Whoops! You don't have any photos, yet.</h5>
+    <div>
+        <a asp-action="Create" class="btn btn-primary mb-3">Add a new photo</a>
+        <br />
+        <a asp-action="AllPhotos" class="btn btn-secondary mb-3" asp-route-category="All">See Photos From Other Users</a>
+    </div>
+</div>
+}
+else
+{
+<div class="mx-auto px-3 py-3 pt-md-5 pb-md-4 text-center">
+    <h2>
+        <span>Your Photos: </span>
     </h2>
     <div>
         <a asp-action="Create" class="btn btn-primary mb-3">Add a new photo</a>
         <br />
-        <a asp-action="AllPhotos" class="btn btn-secondary mb-3" asp-route-category="All">See all photos</a>
+        <a asp-action="AllPhotos" class="btn btn-secondary mb-3" asp-route-category="All">See Photos From Other Users</a>
     </div>
 </div>
 
@@ -26,7 +41,7 @@
                             <h4 class="my-0 font-weight-normal">@Html.DisplayFor(modelItem => item.Title)</h4>
                         </div>
                         <div class="card-body">
-                            <img src="@("~/image/"+item.ImageName)" asp-append-version="true" width="250" height="250" />
+                            <img src="@("~/image/" + item.ImageName)" asp-append-version="true" width="250" height="250" />
                             <p><strong>@Html.DisplayFor(modelItem => item.Category.Name)</strong></p>
                             @Html.ActionLink("See all photos for this project", "AllPhotos", "Photos", new { category = item.Category.Name }, new { @class = "btn btn-outline-info" })
                             <br />
@@ -38,3 +53,4 @@
         </div>
     </div>
 </div>
+}

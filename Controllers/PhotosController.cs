@@ -119,12 +119,7 @@ namespace LetsTryMVC.Controllers
         public IActionResult AllPhotos(string category)
         {
             ViewBag.Categories = _context.Categories.ToList();
-            ProductCategory All = new ProductCategory
-            {
-                Name = "All"
-            };
 
-            ViewBag.Categories.Add(All);
             List<Photo> picsWithCategory = new List<Photo>();
 
             if(category == "All")

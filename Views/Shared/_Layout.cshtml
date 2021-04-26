@@ -18,31 +18,49 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
+                    <div class="navbar-nav flex-grow-1">
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Photos" asp-action="Index">Photos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index">My Orders</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="FriendsList" asp-action="MyFriends">My Friends</a>
-                            </li>
+                        <div>
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Photos
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" asp-controller="Photos" asp-action="Index">My Photos</a>
+                                <a class="dropdown-item" asp-controller="Photos" asp-action="Create">Add a Photo</a>
+                                <a class="dropdown-item" asp-controller="Photos" asp-action="AllPhotos" asp-route-category="All">All Photos</a>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Products
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" asp-controller="Products" asp-action="SearchProducts" asp-route-category="All">All Products</a>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Friends
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" asp-controller="FriendsList" asp-action="MyFriends">My Friends</a>
+                                <a class="dropdown-item" asp-controller="FriendsList" asp-action="Index">Add Friends</a>
+                            </div>
+                        </div> 
+                            <div>
+                                @Html.ActionLink("My Orders", "Index", "Orders", null, new { @class = "btn btn-primary" })
+                            </div>
                         }
                         else
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
-                            </li>
+                            <div class="nav-item">
+                                <a class="btn btn-primary nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+                            </div>
                         }
 
 
-                    </ul>
+                    </div>
                 </div>
                 @*CART???*@
                 <partial name="_CartSummaryPartial" />
