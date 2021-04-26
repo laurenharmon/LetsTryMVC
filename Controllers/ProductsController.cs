@@ -30,11 +30,34 @@ namespace LetsTryMVC.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
+            ViewBag.Categories = _context.Categories.ToList();
             List<Product> prdcts = _context.Products
                .Include(x => x.Category)
                .ToList();
 
             return View(prdcts);
+        }
+
+        [AllowAnonymous]
+        public IActionResult SearchProducts(string category)
+        {
+            ViewBag.Categories = _context.Categories.ToList();
+ 
+            List<Product> productsWithCategory = new List<Product>();
+
+            if (category == "All")
+            {
+                productsWithCategory = _context.Products.Include(x => x.Category).ToList();
+            }
+            else
+            {
+                productsWithCategory = _context.Products.Where(p => p.Category.Name == category)
+                                .ToList();
+            }
+
+            ViewBag.category = category;
+
+            return View(productsWithCategory);
         }
 
         // GET: Products/Details/5

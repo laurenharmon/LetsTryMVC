@@ -1,7 +1,4 @@
-﻿@*@using LetsTryMVC.Models
-    @model List<Product>*@
-
-@model List<Product>
+﻿@model List<Product>
 
 
 <!DOCTYPE html>
@@ -18,7 +15,8 @@
             <div class="container">
                 <div class="block-heading">
                     <h2>Products</h2>
-                    @if (Model.Count == 0) { 
+                    @if (Model.Count == 0)
+                    {
                         <h4>Looks like there aren't any items for that season.</h4>
                     }
                 </div>
@@ -50,7 +48,7 @@
                             }
 
 
-                        </div>                       
+                        </div>
                         <div class="col-md-12 col-lg-4">
                             <div class="search">
                                 <h3>Filter:</h3>
