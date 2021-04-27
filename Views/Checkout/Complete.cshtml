@@ -4,23 +4,39 @@
     ViewBag.Title = "Checkout Complete";
 }
 
-<div class="text-lg-center">
-    <h2>Checkout Complete</h2>
-    <p>
-        Thanks for your order!
-    </p>
-    <p>
-        Your Order Number is: #@Model
-    </p>
-    <button style=" height: 60px; border: none; position: relative; font-size: 18px; font-weight: 700; letter-spacing: 1px; background-color: #FCB9AA; color: black;">
-        <span style="display: inline;">@Html.ActionLink("How about another box?", "Index", "Products", null, new { @style = "color:black;" })</span>
-    </button>
-    <br />
-    <br />
-    <button style=" height: 60px; border: none; position: relative; font-size: 18px; font-weight: 700; letter-spacing: 1px; background-color: #FCB9AA; color: black;">
-        <span style="display: inline;">@Html.ActionLink("My Orders", "Index", "Orders", null, new { @style = "color:black;" })</span>
-    </button>
-</div>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Complete</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="~/css/checkout.css">
+</head>
+<body>
+    <main class="page">
+        <section class="dark">
+            <div class="container">
+                <div class="block-heading">
+                        <h2>Checkout Complete</h2>
+                    </div>
+                        <p>
+                            Thanks for your order!
+                        </p>
+                        <p>
+                            Your Order Number is: #@Model
+                        </p>
+                        <div>
+                            <span class="row">@Html.ActionLink("My Orders", "Index", "Orders", null, new { @class = "btn btn-primary" })</span>
+                            <span class="row">@Html.ActionLink("How about another box?", "Index", "Products", null, new { @class = "btn btn-secondary" })</span>
+                        </div>
+                </div>
+                </section>
+        </main>
+        </body>
+</html>
+                    
+
 
 
 

@@ -3,54 +3,71 @@
 @{
     ViewData["Title"] = "Photos";
 }
-@if (Model.Count == 0)
-{
-<div class="mx-auto px-3 py-3 pt-md-5 pb-md-4 text-center">
-    <h2>
-        <span>Your Photos: </span>
-    </h2>
-    <h5>Whoops! You don't have any photos, yet.</h5>
-    <div>
-        <a asp-action="Create" class="btn btn-primary mb-3">Add a new photo</a>
-        <br />
-        <a asp-action="AllPhotos" class="btn btn-secondary mb-3" asp-route-category="All">See Photos From Other Users</a>
-    </div>
-</div>
-}
-else
-{
-<div class="mx-auto px-3 py-3 pt-md-5 pb-md-4 text-center">
-    <h2>
-        <span>Your Photos: </span>
-    </h2>
-    <div>
-        <a asp-action="Create" class="btn btn-primary mb-3">Add a new photo</a>
-        <br />
-        <a asp-action="AllPhotos" class="btn btn-secondary mb-3" asp-route-category="All">See Photos From Other Users</a>
-    </div>
-</div>
 
-<div class="container">
-    <div class="card-deck mb-3 text-center" align="center">
-        <div class="row">
-            @foreach (var item in Model)
-            {
-                <div class="card-deck mx-auto text-center col">
-                    <div class="card mb-4 box-shadow">
-                        <div class="card-header">
-                            <h4 class="my-0 font-weight-normal">@Html.DisplayFor(modelItem => item.Title)</h4>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Photos</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="~/css/site.css">
+</head>
+<body>
+    <main class="page">
+        <section class="dark">
+            <div class="container mb-5">
+                <div class="block-heading">
+                    <h1>Your Photos</h1>
+                </div>
+                <div class="content">
+                    @if (Model.Count == 0)
+                    {
+                            <h5>Whoops! You don't have any photos, yet.</h5>
+                            <div>
+                                <a asp-action="Create" class="btn btn-primary mb-3">Add a new photo</a>
+                                <br />
+                                <a asp-action="AllPhotos" class="btn btn-secondary mb-3" asp-route-category="All">See Photos From Other Users</a>
+                            </div>
+                    }
+                    else
+                    {
+                        <div class="mx-auto px-3 py-3 pt-md-5 pb-md-4 text-center">
+                            <div>
+                                <a asp-action="Create" class="btn btn-primary mb-3">Add a new photo</a>
+                                <br />
+                                <a asp-action="AllPhotos" class="btn btn-secondary mb-3" asp-route-category="All">See Photos From Other Users</a>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <img src="@("~/image/" + item.ImageName)" asp-append-version="true" width="250" height="250" />
-                            <p><strong>@Html.DisplayFor(modelItem => item.Category.Name)</strong></p>
-                            @Html.ActionLink("See all photos for this project", "AllPhotos", "Photos", new { category = item.Category.Name }, new { @class = "btn btn-outline-info" })
-                            <br />
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger m-2">Delete</a>
+
+                        <div class="container">
+                            <div class="card-deck mb-3 text-center" align="center">
+                                <div class="row">
+                                    @foreach (var item in Model)
+                                    {
+                                        <div class="card-deck mx-auto text-center col">
+                                            <div class="card mb-4 box-shadow">
+                                                <div class="card-header">
+                                                    <h4 class="my-0 font-weight-normal">@Html.DisplayFor(modelItem => item.Title)</h4>
+                                                </div>
+                                                <div class="card-body">
+                                                    <img src="@("~/image/" + item.ImageName)" asp-append-version="true" width="250" height="250" />
+                                                    <p><strong>@Html.DisplayFor(modelItem => item.Category.Name)</strong></p>
+                                                    @Html.ActionLink("See all photos for this project", "AllPhotos", "Photos", new { category = item.Category.Name }, new { @class = "btn btn-outline-info" })
+                                                    <br />
+                                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger m-2">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
                         </div>
+                    }
                     </div>
                 </div>
-            }
-        </div>
-    </div>
-</div>
-}
+</section>
+</main>
+</body>
+</html>

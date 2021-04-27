@@ -4,43 +4,62 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
 
-<h4>Photo</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input type="hidden" asp-for="UserName" value="@User.Identity.Name" />
-                <span asp-validation-for="UserName"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageFile" class="control-label">Please Select A Photo: </label>
-                <input asp-for="ImageFile" accept="image/*" />
-                <span asp-validation-for="ImageFile" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label">Project: </label>
-                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Photo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="~/css/site.css">
+</head>
+<body>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <main class="page">
+        <section class="dark">
+            <div class="container mb-5">
+                <div class="block-heading">
+                    <h1>Add a Photo</h1>
+                 </div>
+                    <div class="content">
+                        <form asp-action="Create" enctype="multipart/form-data">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <input type="hidden" asp-for="UserName" value="@User.Identity.Name" />
+                                <span asp-validation-for="UserName"></span>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col">
+                                    <label asp-for="Title" class="control-label"></label>
+                                    <input asp-for="Title" class="form-control" />
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
+                                <div class="form-group col">
+                                    <label asp-for="CategoryId" class="control-label">Project Season: </label>
+                                    <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories"></select>
+                                </div>
+                            </div>
+                            <div class="row my-3">
+                                <div class="form-group col">
+                                    <label asp-for="ImageFile" class="control-label">Please Select A Photo: </label>
+                                    <input asp-for="ImageFile" accept="image/*" />
+                                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Add Photo" class="btn btn-primary btn-block" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
 
+                    <div>
+                        <a asp-action="Index">Back to List</a>
+                    </div>
+</body>
+</html>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

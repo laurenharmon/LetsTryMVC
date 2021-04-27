@@ -21,40 +21,41 @@
                     <div class="navbar-nav flex-grow-1">
                         @if (User.Identity.IsAuthenticated)
                         {
-                        <div>
-                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Photos
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" asp-controller="Photos" asp-action="Index">My Photos</a>
-                                <a class="dropdown-item" asp-controller="Photos" asp-action="Create">Add a Photo</a>
-                                <a class="dropdown-item" asp-controller="Photos" asp-action="AllPhotos" asp-route-category="All">All Photos</a>
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle mr-1" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Products
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" asp-controller="Products" asp-action="SearchProducts" asp-route-category="All">All Products</a>
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Products
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" asp-controller="Products" asp-action="SearchProducts" asp-route-category="All">All Products</a>
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle mr-1" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Photos
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" asp-controller="Photos" asp-action="Index">My Photos</a>
+                                    <a class="dropdown-item" asp-controller="Photos" asp-action="Create">Add a Photo</a>
+                                    <a class="dropdown-item" asp-controller="Photos" asp-action="AllPhotos" asp-route-category="All">All Photos</a>
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Friends
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" asp-controller="FriendsList" asp-action="MyFriends">My Friends</a>
-                                <a class="dropdown-item" asp-controller="FriendsList" asp-action="Index">Add Friends</a>
+
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle mr-1" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Friends
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" asp-controller="FriendsList" asp-action="MyFriends">My Friends</a>
+                                    <a class="dropdown-item" asp-controller="FriendsList" asp-action="Index">Add Friends</a>
+                                </div>
                             </div>
-                        </div> 
                             <div>
                                 @Html.ActionLink("My Orders", "Index", "Orders", null, new { @class = "btn btn-primary" })
                             </div>
                         }
                         else
                         {
-                            <div class="nav-item">
+                            <div class="nav-item mr-1">
                                 <a class="btn btn-primary nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
                             </div>
                         }
